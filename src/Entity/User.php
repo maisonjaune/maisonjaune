@@ -82,6 +82,11 @@ class User implements PasswordAuthenticatedUserInterface, EntityTimestampInterfa
         return $this;
     }
 
+    public function getFullname(): ?string
+    {
+        return implode(' ', [$this->getFirstname(), $this->getLastname()]);
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
