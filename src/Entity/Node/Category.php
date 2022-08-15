@@ -6,6 +6,7 @@ use App\Repository\Node\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table(name: "node_category")]
 class Category
 {
     #[ORM\Id]

@@ -2,16 +2,27 @@
 
 namespace App\Entity;
 
+use App\EntityInterface\Timestamp\EntityTimestampTrait;
+use App\EntityInterface\Timestamp\EntityTimestampInterface;
+use App\EventListener\User\HasChangedPasswordListener;
 use App\Repository\UserRepository;
+use App\Enum\CivilityEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\EntityListeners([HasChangedPasswordListener::class])]
+class User implements PasswordAuthenticatedUserInterface, EntityTimestampInterface
 {
+    use EntityTimestampTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?CivilityEnum $civility = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $firstname = null;
@@ -27,9 +38,6 @@ class User
 
     #[ORM\Column]
     private ?bool $isMember = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastConnectionAt = null;
@@ -86,7 +94,7 @@ class User
         return $this;
     }
 
-    public function isIsActif(): ?bool
+    public function isActif(): ?bool
     {
         return $this->isActif;
     }
@@ -98,7 +106,7 @@ class User
         return $this;
     }
 
-    public function isIsMember(): ?bool
+    public function isMember(): ?bool
     {
         return $this->isMember;
     }
@@ -106,18 +114,6 @@ class User
     public function setIsMember(bool $isMember): self
     {
         $this->isMember = $isMember;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -142,6 +138,31 @@ class User
     public function setPassword(?string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $password): self
+    {
+        $this->password = microtime();
+        $this->plainPassword = $password;
+
+        return $this;
+    }
+
+    public function getCivility(): ?CivilityEnum
+    {
+        return $this->civility;
+    }
+
+    public function setCivility(?CivilityEnum $civility): self
+    {
+        $this->civility = $civility;
 
         return $this;
     }

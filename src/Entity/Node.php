@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use App\EntityInterface\EntitySlugInterface;
+use App\EntityInterface\Slug\Slug;
+use App\EntityInterface\Timestamp\EntityTimestampTrait;
+use App\EntityInterface\Timestamp\EntityTimestampInterface;
 use App\Repository\NodeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,8 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: NodeRepository::class)]
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name: "node_type", type: "string")]
-abstract class Node
+abstract class Node implements EntityTimestampInterface, EntitySlugInterface
 {
+    use EntityTimestampTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,31 +26,26 @@ abstract class Node
     protected ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Slug(fields: ["title"])]
     protected ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
     protected ?string $content = null;
 
-    #[ORM\Column]
-    protected ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    protected ?\DateTimeImmutable $updatedAt = null;
-
     #[ORM\Column(nullable: true)]
     protected ?\DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column]
-    protected ?bool $isActif = null;
+    protected ?bool $isActif = false;
 
     #[ORM\Column]
-    protected ?bool $isDraft = null;
+    protected ?bool $isDraft = false;
 
     #[ORM\Column]
-    protected ?bool $isSticky = null;
+    protected ?bool $isSticky = false;
 
     #[ORM\Column]
-    protected ?bool $isCommentable = null;
+    protected ?bool $isCommentable = true;
 
     #[ORM\ManyToOne]
     protected ?User $author = null;
@@ -90,30 +91,6 @@ abstract class Node
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     public function getPublishedAt(): ?\DateTimeImmutable
     {
         return $this->publishedAt;
@@ -126,7 +103,7 @@ abstract class Node
         return $this;
     }
 
-    public function isIsActif(): ?bool
+    public function isActif(): ?bool
     {
         return $this->isActif;
     }
@@ -138,7 +115,7 @@ abstract class Node
         return $this;
     }
 
-    public function isIsDraft(): ?bool
+    public function isDraft(): ?bool
     {
         return $this->isDraft;
     }
@@ -150,7 +127,7 @@ abstract class Node
         return $this;
     }
 
-    public function isIsSticky(): ?bool
+    public function isSticky(): ?bool
     {
         return $this->isSticky;
     }
@@ -162,7 +139,7 @@ abstract class Node
         return $this;
     }
 
-    public function isIsCommentable(): ?bool
+    public function isCommentable(): ?bool
     {
         return $this->isCommentable;
     }

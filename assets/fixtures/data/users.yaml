@@ -1,0 +1,118 @@
+---
+
+super.admin@mail.test:
+    civility: MR
+    firstname: Principal
+    lastname: Super Admin
+    email: super.admin@mail.test
+    password: azerty
+    roles: ['ROLE_SUPER_ADMIN']
+    isMember: true
+
+admin@mail.test:
+    civility: MR
+    firstname: Principal
+    lastname: Admin
+    email: admin@mail.test
+    password: azerty
+    roles: ['ROLE_ADMIN']
+    isMember: true
+
+gestionnaire@mail.test:
+    civility: MR
+    firstname: Chef
+    lastname: Gestionnaire
+    email: gestionnaire@mail.test
+    password: azerty
+    roles: ['ROLE_MANAGER']
+    isMember: true
+
+publisher1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: Publisher 1
+    email: publisher1@mail.test
+    password: azerty
+    roles: ['ROLE_PUBLISHER']
+    isMember: true
+
+redacteur1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: Rédacteur 1
+    email: redacteur1@mail.test
+    password: azerty
+    roles: ['ROLE_EDITOR']
+    isMember: true
+
+redacteur2@mail.test:
+    civility: MME
+    firstname: Utilisateur
+    lastname: Rédacteur 2
+    email: redacteur2@mail.test
+    password: azerty
+    roles: ['ROLE_EDITOR']
+    isMember: true
+
+correcteur1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: Correcteur 1
+    email: correcteur1@mail.test
+    password: azerty
+    roles: ['ROLE_EXAMINER']
+    isMember: true
+
+correcteur2@mail.test:
+    civility: MME
+    firstname: Utilisateur
+    lastname: Correcteur 2
+    email: correcteur2@mail.test
+    password: azerty
+    roles: ['ROLE_EXAMINER']
+    isMember: true
+
+staff1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: Staff 1
+    email: staff1@mail.test
+    password: azerty
+    roles: ['ROLE_STAFF']
+    isMember: true
+
+guest1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: Guest 1
+    email: guest1@mail.test
+    password: azerty
+    roles: ['ROLE_GUEST']
+    isMember: true
+
+user1@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: User 1
+    email: user1@mail.test
+    password: azerty
+    roles: []
+    isMember: false
+
+user2@mail.test:
+    civility: MME
+    firstname: Utilisateur
+    lastname: User 2
+    email: user2@mail.test
+    password: azerty
+    roles: []
+    isMember: false
+
+user3@mail.test:
+    civility: MR
+    firstname: Utilisateur
+    lastname: User 3
+    email: user3@mail.test
+    password: azerty
+    roles: []
+    isMember: false

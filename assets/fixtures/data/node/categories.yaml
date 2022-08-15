@@ -1,0 +1,28 @@
+---
+News:
+    name: News
+    shortname: News
+
+Mercato:
+    name: Mercato
+    shortname: Mercato
+
+Radio Jaune:
+    name: Radio Jaune
+    shortname: Radio
+
+Poadcast:
+    name: Poadcast
+    shortname: Poadcast
+
+Féminines:
+    name: Féminines
+    shortname: Féminines
+
+Jeunes:
+    name: Jeunes
+    shortname: Jeunes
+
+Interview:
+    name: Interview
+    shortname: Interview

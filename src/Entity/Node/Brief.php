@@ -10,4 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "node_brief")]
 class Brief extends Node
 {
+    public function __construct()
+    {
+        $this->isCommentable = false;
+    }
 }
