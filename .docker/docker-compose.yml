@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  database:
+    image: mysql:5.6.50
+    volumes:
+      - ./services/database/data:/var/lib/mysql
+      - ./services/database/import:/import
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${BDD_MYSQL_ROOT_PASSWORD}"
+      - "MYSQL_USER=${BDD_MYSQL_USER}"
+      - "MYSQL_PASSWORD=${BDD_MYSQL_PASSWORD}"
+      - "MYSQL_DATABASE=${BDD_MYSQL_DATABASE}"
+
+  web:
+    image: gjean76/php-symfony:8.1-apache
+    build:
+      args:
+        USER_ID: ${USER_ID:-0}
+        GROUP_ID: ${GROUP_ID:-0}
+    depends_on:
+      - database
+      - smtp
+    volumes:
+      - ${SOURCE_ROOT_FOLDER}:/app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - database
+    environment:
+      - PMA_HOST=database
+
+  node:
+    build: ./services/node
+    volumes:
+      - ${SOURCE_ROOT_FOLDER}:/app
+
+  smtp:
+    image: maildev/maildev

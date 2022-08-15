@@ -1,0 +1,47 @@
+version: '3.0'
+services:
+    database:
+        labels:
+            - traefik.enable=false
+        networks:
+            - default
+
+    web:
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.maisonjaune_https.tls=true
+            - traefik.http.routers.maisonjaune_https.tls.certresolver=letsEncrypt
+            - traefik.http.routers.maisonjaune_https.rule=Host(`maisonjaune.gwennael-jean.ovh`)
+            - traefik.http.routers.maisonjaune_https.entryPoints=websecure
+            - traefik.http.routers.maisonjaune_http.rule=Host(`maisonjaune.gwennael-jean.ovh`)
+            - traefik.http.routers.maisonjaune_http.entryPoints=web
+            - traefik.docker.network=proxy
+        networks:
+            - default
+            - proxy
+
+    phpmyadmin:
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.maisonjaune_phpmyadmin.rule=Host(`phpmyadmin.maisonjaune.gwennael-jean.ovh`)
+            - traefik.http.routers.maisonjaune_phpmyadmin.entryPoints=web
+            - traefik.docker.network=proxy
+        networks:
+            - default
+            - proxy
+
+    smtp:
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.maisonjaune_maildev.rule=Host(`maildev.maisonjaune.gwennael-jean.ovh`)
+            - traefik.http.routers.maisonjaune_maildev.entryPoints=web
+            - traefik.http.services.maisonjaune_maildev.loadbalancer.server.port=80
+            - traefik.docker.network=proxy
+        networks:
+            - default
+            - proxy
+
+networks:
+    proxy:
+        external:
+            name: proxy
