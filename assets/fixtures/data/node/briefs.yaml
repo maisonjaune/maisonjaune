@@ -1,0 +1,139 @@
+---
+
+Brève News {1..10}:
+    title: Brève News {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur1@mail.test
+    categories:
+        - News
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1
+
+Brève Mercato {1..10}:
+    title: Brève Mercato {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur2@mail.test
+    categories:
+        - Mercato
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1
+
+Brève Poadcast {1..10}:
+    title: Brève Poadcast {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur1@mail.test
+    categories:
+        - Poadcast
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1
+
+Brève Féminines {1..10}:
+    title: Brève Féminines {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur2@mail.test
+    categories:
+        - Féminines
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1
+
+Brève Jeunes {1..10}:
+    title: Brève Jeunes {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur1@mail.test
+    categories:
+        - Jeunes
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1
+
+Brève Interview {1..10}:
+    title: Brève Interview {1..10}
+    content: |
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac gravida nisl, vel sagittis mauris.
+            Suspendisse pretium a urna eget mattis. Cras blandit gravida ipsum at maximus. Cras nec maximus est, et
+            tristique nulla. Phasellus quis mattis magna. Fusce accumsan et eros et iaculis. Maecenas mollis mollis
+            nulla ac cursus. Integer tristique odio ac consectetur interdum.
+        </p>
+        <p>
+            Etiam sagittis tempus leo, et consequat leo fringilla quis. Pellentesque sit amet nisl risus. Nullam mattis,
+            tortor vitae ullamcorper suscipit, nisl quam lobortis orci, id blandit dui est in odio. Donec egestas
+            consectetur orci, in ultrices nisl tempor ac. Suspendisse vel dolor dui. Duis eget accumsan ligula, eu
+            gravida erat. Aenean rhoncus lacus eget sem molestie aliquet. Duis posuere laoreet tristique. Donec blandit
+            odio ut orci imperdiet, id eleifend elit semper.
+        </p>
+    author: redacteur2@mail.test
+    categories:
+        - Interview
+    isDraft: 0
+    publishedAt: now:-1 month
+    isActif: 1

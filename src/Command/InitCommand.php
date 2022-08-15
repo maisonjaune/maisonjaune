@@ -9,33 +9,25 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class InitCommand extends Command
 {
-    private EntityManagerInterface $entityManager;
-
-    private KernelInterface $kernel;
-
-    private ContainerBagInterface $parameterBag;
-
     protected static $defaultName = 'app:init';
 
-    public function __construct(EntityManagerInterface $entityManager, KernelInterface $kernel, ContainerBagInterface $parameterBag)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private KernelInterface        $kernel,
+    )
     {
         parent::__construct();
-        $this->entityManager = $entityManager;
-        $this->kernel = $kernel;
-        $this->parameterBag = $parameterBag;
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('Initialisation de l\'application')
-            ->addOption('group', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Execute fixture in this group');
+            ->setDescription('Initialisation de l\'application');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -57,7 +49,7 @@ class InitCommand extends Command
 
         $this->executeMigration($io, $output);
 
-        $this->executeFixture($io, $output, $input->getOption('group'));
+        $this->executeFixture($io, $output);
 
         $end = microtime(true);
 
@@ -68,7 +60,7 @@ class InitCommand extends Command
 
         $io->success("Temps d'exécution de la commande : " . $minutes . " minutes " . $rest . " secondes");
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function removeFiles(SymfonyStyle $io, OutputInterface $output)
@@ -115,12 +107,11 @@ class InitCommand extends Command
         $io->success("Execution des migrations effectué");
     }
 
-    private function executeFixture(SymfonyStyle $io, OutputInterface $output, array $groups = [])
+    private function executeFixture(SymfonyStyle $io, OutputInterface $output)
     {
         $command = $this->getApplication()->find('doctrine:fixtures:load');
         $argument = new ArrayInput([
             '--append' => true,
-            '--group' => array_merge(['initial'], [$this->kernel->getEnvironment()], $groups)
         ]);
         $command->run($argument, $output);
         $io->success("Ajout du jeu de test effectué");
