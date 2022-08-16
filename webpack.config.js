@@ -1,4 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
+const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -21,8 +23,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('main', './assets/main.js')
-    .addEntry('recaptcha', './assets/js/front/recaptcha.js')
-    .addEntry('cookies', './assets/js/front/cookies.js')
+    .addEntry('recaptcha', './assets/recaptcha.js')
+    .addEntry('cookies', './assets/cookies.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -59,6 +61,17 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+
+    .addPlugin(new CopyPlugin({
+        patterns: [
+            { from: 'assets/images/', to: 'images/[path][name][ext]' },
+        ]
+    }))
+
+    .addPlugin(new Dotenv({
+        path: './.env',
+        systemvars: true
+    }))
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

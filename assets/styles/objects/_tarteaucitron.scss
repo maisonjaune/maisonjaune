@@ -1,0 +1,19 @@
+.tarteaucitronAllow, .tarteaucitronDeny {
+    color: $white;
+    padding: 10px 20px !important;
+    border-radius: 10px;
+}
+
+.tarteaucitronAllow {
+    background: $color-green !important;
+}
+
+#tarteaucitronCloseAlert {
+    background: transparent !important;
+    color: $white !important;
+}
+
+#tarteaucitronPercentage {
+    background: $color-green !important;
+    box-shadow: none;
+}

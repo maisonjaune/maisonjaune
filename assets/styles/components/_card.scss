@@ -1,0 +1,50 @@
+.card {
+
+    .card-body {
+
+        .card-title {
+            margin-right: -$card-spacer-x;
+            margin-left: -$card-spacer-x;
+            margin-top: -$card-spacer-x;
+            margin-bottom: $card-spacer-x;
+            border-bottom: 1px solid $card-border-color;
+
+            &.card-title-tab .tab {
+                border-right: 1px solid $card-border-color;
+                text-decoration: none;
+
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+
+        .card-row {
+            border-bottom: 1px solid $card-border-color;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+
+            &:first-child {
+                padding-top: 0;
+            }
+
+            &:last-child {
+                border-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+    }
+}
+
+.card-deck {
+
+    @include media-breakpoint-down(md) {
+        &.flex-column.flex-lg-row .card {
+            margin-bottom: 1rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

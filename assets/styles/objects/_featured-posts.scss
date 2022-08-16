@@ -1,0 +1,14 @@
+.featured-posts {
+    margin-bottom: 1rem;
+
+    .title {
+        font-size: 1.5em;
+        text-transform: uppercase;
+        font-weight: bold;
+
+        .separator-x {
+            height: 2px;
+            background-color: $black;
+        }
+    }
+}

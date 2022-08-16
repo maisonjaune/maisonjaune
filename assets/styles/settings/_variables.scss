@@ -1,0 +1,24 @@
+// Variables
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px
+);
+
+$border-radius: 0;
+
+$color-yellow: #FFD61A;
+$color-green: #3B8453;
+
+$primary: $color-green;
+$secondary: $color-yellow;
+
+$card-border-color: rgba(0, 0, 0, 0.125);
+$card-cap-bg: inherit;
+
+@import "~bootstrap/scss/variables";
+//@import "~font-awesome/scss/font-awesome";
+
+$font-family-base: "Gotham Narrow Light", $font-family-base;

@@ -1,0 +1,21 @@
+.img-hover-container {
+
+    .img-primary {
+        display: block;
+    }
+
+    .img-hover {
+        display: none;
+    }
+
+    &:hover {
+
+        .img-primary {
+            display: none;
+        }
+
+        .img-hover {
+            display: block;
+        }
+    }
+}

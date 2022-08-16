@@ -1,0 +1,16 @@
+.card.card-match {
+
+    .tab {
+        text-transform: uppercase;
+        color: $gray-700;
+
+        &.active {
+            color: $black;
+            border-bottom: 2px solid $black;
+        }
+    }
+
+    .card-match-body {
+        margin: 0 -20px;
+    }
+}
