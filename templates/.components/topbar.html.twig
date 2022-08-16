@@ -8,13 +8,13 @@
 
     <div class="collapse navbar-collapse" id="topbar">
         <ul class="navbar-nav">
-
+            {# TODO Gestion du menu dans la topbar #}
         </ul>
         <ul class="navbar-nav ml-auto">
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {# TODO AVATAR DE L'UTILISATEUR #}
+                        {# TODO Affichage de l'avatar de l'utilisateur connecté sur la topbar #}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">

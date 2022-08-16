@@ -1,6 +1,16 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
 
+    globals:
+        app_version: '%env(APP_VERSION)%'
+        google_recatpcha:
+            site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+        google_site_verification: '%env(GOOGLE_SITE_VERIFICATION)%'
+        google_tag_manager_code: '%env(GOOGLE_TAG_MANAGER_CODE)%'
+        image:
+            topbar: 'https://dummyimage.com/30x30/bdc3c7/7f8c8d'
+            thumbnail: 'https://dummyimage.com/150x150/bdc3c7/7f8c8d'
+
 when@test:
     twig:
         strict_variables: true

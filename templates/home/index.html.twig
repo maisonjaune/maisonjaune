@@ -1,7 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block share_meta %}
+    <meta property="og:url" content="{{ url('app_home') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="La Maison Jaune" />
+    <meta property="og:description" content="La Maison Jaune. Un site sur le FC Nantes, un média pour informer, pour réunir les fans mais également leur donner la parole" />
+    <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ '/images/logo-small.png' }}" />
+{% endblock %}
+
+{% block ld_json %}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "url": "{{ app.request.getSchemeAndHttpHost() }}",
+            "sameAs" : [
+                "https://twitter.com/La_MaisonJaune",
+                "https://www.facebook.com/L.MaisonJaune",
+                "https://www.instagram.com/la_maison.jaune"
+            ],
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "{{ app.request.getSchemeAndHttpHost() }}/search?&q={query}",
+                "query-input": "required name=query"
+            }
+        }
+    </script>
+{% endblock %}
 
 {% block content %}
-
+    {% if mainPosts is defined and mainPosts | length == 2 %}
+        {% include '@components/jumbotrons/jumbotron-home.html.twig' with {
+            mainPost: mainPosts.0,
+            secondaryPost: mainPosts.1 is defined ? mainPosts.1 : null,
+        } only %}
+    {% endif %}
+    <div class="container">
+        {{ component('flash') }}
+        <div class="my-3">
+            <div class="card-deck flex-column flex-lg-row">
+                {{ component('card-poll') }}
+                {{ component('card-matchs') }}
+                {{ component('card-brief_list') }}
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ component('search') }}
+        </div>
+    </div>
+    <div class="container">
+        <div class="my-3">
+            {# TODO Affichage des articles catégorisé sur la page d'accueil #}
+        </div>
+    </div>
 {% endblock %}

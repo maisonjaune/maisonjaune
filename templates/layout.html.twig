@@ -28,6 +28,14 @@
     <body>
         {{ block('body') }}
 
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/tarteaucitron.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/tarteaucitron.services.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/lang/tarteaucitron.fr.js') }}"></script>
+
+        <script type="text/javascript">var googleTagManagerKey = "{{ google_tag_manager_code }}"</script>
+
+        {{ encore_entry_script_tags('cookies') }}
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
