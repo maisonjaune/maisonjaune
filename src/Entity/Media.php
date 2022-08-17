@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Enum\Media\ContextEnum;
 use App\Enum\Media\ProviderEnum;
+use App\EventListener\MediaListener;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[ORM\EntityListeners([MediaListener::class])]
 class Media
 {
     #[ORM\Id]
