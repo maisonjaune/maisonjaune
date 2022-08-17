@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Enum\ContextEnum;
+use App\Enum\Media\ContextEnum;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
@@ -37,6 +38,8 @@ class Media
 
     #[ORM\Column(nullable: true)]
     private ?int $height = null;
+
+    private $binaryContent;
 
     public function getId(): ?int
     {
@@ -135,6 +138,19 @@ class Media
     public function setHeight(?int $height): self
     {
         $this->height = $height;
+
+        return $this;
+    }
+
+    public function getBinaryContent(): ?File
+    {
+        return $this->binaryContent;
+    }
+
+    public function setBinaryContent(File $binaryContent): self
+    {
+        $this->path = null;
+        $this->binaryContent = $binaryContent;
 
         return $this;
     }
