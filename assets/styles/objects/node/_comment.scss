@@ -1,0 +1,16 @@
+.comment {
+    @extend .mb-3;
+
+    .author {
+        font-size: 1.2rem;
+    }
+
+    .date {
+        @extend .text-muted;
+        @extend .mb-1;
+    }
+
+    .content {
+
+    }
+}

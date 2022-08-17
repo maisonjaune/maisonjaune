@@ -1,0 +1,17 @@
+.footer {
+
+    .jumbotron {
+        background-color: $primary;
+        color: $white;
+        margin-bottom: 0;
+
+        a {
+            color: $white;
+            text-decoration: none;
+
+            .fa-stack-1x {
+                color: $primary;
+            }
+        }
+    }
+}

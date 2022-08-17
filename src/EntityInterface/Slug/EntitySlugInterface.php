@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EntityInterface;
+namespace App\EntityInterface\Slug;
 
 interface EntitySlugInterface
 {

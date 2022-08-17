@@ -1,0 +1,25 @@
+.block.block-link {
+    margin-bottom: 1rem;
+
+    .title {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    a {
+        color: $black;
+
+        .fa-stack {
+            font-size: 18px;
+
+            .fa-circle {
+                color: $secondary !important;
+            }
+
+            .fa-arrow-right {
+                color: $primary !important;
+            }
+        }
+    }
+
+}

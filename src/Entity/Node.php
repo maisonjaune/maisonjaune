@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\EntityInterface\EntitySlugInterface;
-use App\EntityInterface\Slug\Slug;
+use App\EntityInterface\Slug\EntitySlugInterface;
+use App\EntityInterface\Slug\Annotation\Slug;
 use App\EntityInterface\Timestamp\EntityTimestampTrait;
 use App\EntityInterface\Timestamp\EntityTimestampInterface;
 use App\Repository\NodeRepository;

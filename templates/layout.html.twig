@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+
+        ***************                               Hey salut toi !                                         ***************
+
+        Plutôt que de regarder notre code source, viens travailler directement dessus !
+
+        On est toujours à la recherche de nouveaux talents, alors si t'es intéressé contacte moi à gwennael.jean@gmail.com ;)
+
+        ***************                                      A+ !                                             ***************
+
+         -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <link rel="icon" href="{{ asset('build/images/favicon.ico') }}" />
+        <title>{% block title %}Bienvenue sur le site indépendant du FC Nantes!{% endblock %} | La Maison Jaune</title>
+
+        <meta name="wot-verification" content="51741ff29b91042fb5c1"/>
+        <meta name="language" content="fr-FR" />
+
+        {# TODO Ajout des metadata pour le SEO #}
+
+        {% block stylesheets %}{% endblock %}
+
+        {% block share_meta %}{% endblock %}
+        {% block ld_json %}{% endblock %}
+    </head>
+    <body>
+        {{ block('body') }}
+
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/tarteaucitron.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/tarteaucitron.services.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/plugin/tarteaucitron/lang/tarteaucitron.fr.js') }}"></script>
+
+        <script type="text/javascript">var googleTagManagerKey = "{{ google_tag_manager_code }}"</script>
+
+        {{ encore_entry_script_tags('cookies') }}
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

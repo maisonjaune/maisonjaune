@@ -3,7 +3,7 @@
 namespace App\EventListener;
 
 use App\EntityInterface\EntitySlugInterface;
-use App\EntityInterface\Slug\Slug;
+use App\EntityInterface\Slug\Annotation\Slug;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 

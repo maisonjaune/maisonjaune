@@ -1,0 +1,16 @@
+.topbar {
+    background-color: $primary;
+
+    .nav-link {
+        color: $white;
+        text-transform: uppercase;
+        font-weight: bold;
+        white-space: nowrap;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.875rem;
+
+        &.btn-secondary {
+            color: $primary !important;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+.post-content.big-format {
+    padding: 5rem 3rem 1rem 3rem;
+    background-color: #fff;
+
+    h2 {
+        font-size: 2rem;
+        display: inline-block;
+        padding-right: 1rem;
+        border-bottom: 3px solid $color-yellow;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        font-size: 1.5em;
+        margin-bottom: 0.5rem;
+    }
+
+    div.quote {
+        color: $gray-600;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        text-align: justify;
+        margin-bottom: 1rem;
+    }
+
+    img {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    [data-oembed-url] {
+        margin-bottom: 1rem;
+    }
+}

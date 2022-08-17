@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\EntityInterface\Slug;
+namespace App\EntityInterface\Slug\Annotation;
 
 use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;

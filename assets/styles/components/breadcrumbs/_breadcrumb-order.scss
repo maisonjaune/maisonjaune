@@ -1,0 +1,21 @@
+.breadcrumb.breadcrumb-order {
+    justify-content: center;
+
+    .breadcrumb-item {
+
+        a {
+            width: 125px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &::before {
+            content: '';
+        }
+
+        &.disable a {
+            color: $gray-500;
+        }
+    }
+}
