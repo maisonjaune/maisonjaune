@@ -2,6 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Media;
+use App\Enum\Media\ContextEnum;
+use App\Enum\Media\ProviderEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -44,6 +47,19 @@ abstract class AbstractFixture extends Fixture implements ContainerAwareInterfac
         }
 
         return $date;
+    }
+
+    protected function createFile($path): File
+    {
+        return new File($this->getAssetsPath() . '/media/' . ltrim($path, '/'));
+    }
+
+    protected function createMedia($path, $providerName = ProviderEnum::IMAGE, $context = ContextEnum::DEFAULT): Media
+    {
+        return (new Media())
+            ->setBinaryContent($this->createFile($path))
+            ->setContext($context)
+            ->setProviderName($providerName);
     }
 
     protected function getRandomFileInDirectory($directory): File
