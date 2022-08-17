@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\Media\ContextEnum;
+use App\Enum\Media\ProviderEnum;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -16,7 +17,7 @@ class Media
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $providerName = null;
+    private ?ProviderEnum $providerName = null;
 
     #[ORM\Column()]
     private ?ContextEnum $context = null;
@@ -46,12 +47,12 @@ class Media
         return $this->id;
     }
 
-    public function getProviderName(): ?string
+    public function getProviderName(): ?ProviderEnum
     {
         return $this->providerName;
     }
 
-    public function setProviderName(string $providerName): self
+    public function setProviderName(ProviderEnum $providerName): self
     {
         $this->providerName = $providerName;
 
