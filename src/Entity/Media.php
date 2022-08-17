@@ -49,9 +49,9 @@ class Media
         return $this->id;
     }
 
-    public function getProviderName(): ?ProviderEnum
+    public function getProviderName(): ?string
     {
-        return $this->providerName;
+        return $this->providerName->value;
     }
 
     public function setProviderName(ProviderEnum $providerName): self

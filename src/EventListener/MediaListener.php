@@ -3,9 +3,14 @@
 namespace App\EventListener;
 
 use App\Entity\Media;
+use App\Service\Media\MediaManagerInterface;
 
 class MediaListener
 {
+    public function __construct(private MediaManagerInterface $mediaManager)
+    {
+    }
+
     public function prePersist(Media $media): void
     {
         $this->uploadBinaryContent($media);
@@ -23,6 +28,6 @@ class MediaListener
 
     protected function uploadBinaryContent(Media $media): void
     {
-
+        $this->mediaManager->save($media);
     }
 }
