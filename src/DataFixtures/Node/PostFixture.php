@@ -6,6 +6,8 @@ use App\DataFixtures\AbstractFixture;
 use App\DataFixtures\UserFixture;
 use App\Entity\Node\Post;
 use App\Entity\User;
+use App\Enum\Media\ContextEnum;
+use App\Enum\Media\ProviderEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -29,7 +31,7 @@ class PostFixture extends AbstractFixture implements DependentFixtureInterface
                     ->setExcerpt($data['excerpt'])
                     ->setTitle(str_replace($replace, $i, $data['title']))
                     ->setContent($data['content'])
-                    ->setImage($this->createMedia($data['image']));
+                    ->setImage($this->createMedia($data['image'], ProviderEnum::IMAGE, ContextEnum::POST));
 
                 $author = $this->getReference(UserFixture::class . $data['author']);
 

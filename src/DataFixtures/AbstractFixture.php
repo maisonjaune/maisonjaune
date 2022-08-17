@@ -54,12 +54,12 @@ abstract class AbstractFixture extends Fixture implements ContainerAwareInterfac
         return new File($this->getAssetsPath() . '/media/' . ltrim($path, '/'));
     }
 
-    protected function createMedia($path, $providerName = ProviderEnum::IMAGE, $context = ContextEnum::DEFAULT): Media
+    protected function createMedia($path, $providerName = ProviderEnum::FILE, $context = ContextEnum::DEFAULT): Media
     {
         return (new Media())
             ->setBinaryContent($this->createFile($path))
-            ->setContext($context)
-            ->setProviderName($providerName);
+            ->setProviderName($providerName)
+            ->setContext($context);
     }
 
     protected function getRandomFileInDirectory($directory): File

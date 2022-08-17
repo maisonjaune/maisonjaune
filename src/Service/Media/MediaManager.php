@@ -3,18 +3,20 @@
 namespace App\Service\Media;
 
 use App\Entity\Media;
+use App\Service\Media\Exception\UndefinedMediaProviderException;
 use Psr\Container\ContainerInterface;
 
 class MediaManager implements MediaManagerInterface
 {
-    public function __construct(private ContainerInterface $locator)
+    public function __construct(
+        private ContainerInterface $locator
+    )
     {
     }
 
     public function save(Media $media): void
     {
         $provider = $this->getProvider($media);
-        dd($provider);
         $provider->save($media);
     }
 

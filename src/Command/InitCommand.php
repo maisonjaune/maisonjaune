@@ -66,7 +66,9 @@ class InitCommand extends Command
     private function removeFiles(SymfonyStyle $io, OutputInterface $output)
     {
         if ($this->kernel->getEnvironment() !== 'test') {
-            $folders = [];
+            $folders = [
+                $this->kernel->getProjectDir() . '/public/media',
+            ];
 
             $fileSystem = new Filesystem();
             foreach ($folders as $folder) {
