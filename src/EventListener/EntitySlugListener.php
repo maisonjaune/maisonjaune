@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\EntityInterface\EntitySlugInterface;
+use App\EntityInterface\Slug\EntitySlugInterface;
 use App\EntityInterface\Slug\Annotation\Slug;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -27,26 +27,29 @@ class EntitySlugListener
         }
     }
 
-    private function handleSlug(EntitySlugInterface $entity)
+    private function handleSlug(EntitySlugInterface $entity): void
     {
         $reflObject = new \ReflectionObject($entity);
 
         foreach ($reflObject->getProperties() as $reflProperty) {
-            $attributes = $reflProperty->getAttributes(Slug::class);
 
-            foreach ($attributes as $attribute) {
-                $arguments = $attribute->getArguments();
+            if (null === $reflProperty->getValue($entity)) {
+                $attributes = $reflProperty->getAttributes(Slug::class);
 
-                $slug = [];
+                foreach ($attributes as $attribute) {
+                    $arguments = $attribute->getArguments();
 
-                foreach ($arguments['fields'] as $field) {
-                    $reflPropertyMain = new \ReflectionProperty($entity, $field);
-                    $slug[] = $reflPropertyMain->getValue($entity);
+                    $slug = [];
+
+                    foreach ($arguments['fields'] as $field) {
+                        $reflPropertyMain = new \ReflectionProperty($entity, $field);
+                        $slug[] = $reflPropertyMain->getValue($entity);
+                    }
+
+                    $slugger = new AsciiSlugger();
+
+                    $reflProperty->setValue($entity, $slugger->slug(implode(' ', $slug))->lower());
                 }
-
-                $slugger = new AsciiSlugger();
-
-                $reflProperty->setValue($entity, $slugger->slug(implode(' ', $slug))->lower());
             }
         }
     }

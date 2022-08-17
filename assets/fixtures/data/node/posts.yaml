@@ -20,7 +20,7 @@ Article News {1..20}:
     author: redacteur1@mail.test
     categories:
         - News
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month
@@ -46,7 +46,7 @@ Article Mercato {1..20}:
     author: redacteur2@mail.test
     categories:
         - Mercato
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month
@@ -72,7 +72,7 @@ Article Poadcast {1..20}:
     author: redacteur1@mail.test
     categories:
         - Poadcast
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month
@@ -98,7 +98,7 @@ Article Féminines {1..20}:
     author: redacteur2@mail.test
     categories:
         - Féminines
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month
@@ -124,7 +124,7 @@ Article Jeunes {1..20}:
     author: redacteur1@mail.test
     categories:
         - Jeunes
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month
@@ -150,7 +150,7 @@ Article Interview {1..20}:
     author: redacteur2@mail.test
     categories:
         - Interview
-    image: "nodes/posts/"
+    image: "node/post/media-01.jpg"
     isDraft: 0
     isSticky: 1
     publishedAt: now:-1 month

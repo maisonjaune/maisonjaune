@@ -1,0 +1,14 @@
+parameters:
+  media:
+    directory: '%kernel.project_dir%/public/media'
+    contexts:
+      default:
+        providers:
+          - media.provider.file
+          - media.provider.image
+      post:
+        providers:
+          - media.provider.image
+
+    providers:
+      media.provider.file: []
