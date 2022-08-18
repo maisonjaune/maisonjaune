@@ -29,12 +29,10 @@
 {% endblock %}
 
 {% block content %}
-    {% if mainPosts is defined and mainPosts | length == 2 %}
-        {% include '@components/jumbotrons/jumbotron-home.html.twig' with {
-            mainPost: mainPosts.0,
-            secondaryPost: mainPosts.1 is defined ? mainPosts.1 : null,
-        } only %}
+    {% if mainPosts is defined %}
+        {{ component('two-post-jumbotron', { posts: mainPosts }) }}
     {% endif %}
+
     <div class="container">
         {{ component('flash') }}
         <div class="my-3">
@@ -48,6 +46,7 @@
             {{ component('search') }}
         </div>
     </div>
+
     <div class="container">
         <div class="my-3">
             {# TODO Affichage des articles catégorisé sur la page d'accueil #}

@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Node;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,10 +20,10 @@ class NodeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Node::class);
+        parent::__construct($registry, $this->getNodeClass());
     }
 
-    public function add(Node $entity, bool $flush = false): void
+    public function persist(Node $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -39,28 +41,17 @@ class NodeRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Node[] Returns an array of Node objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getQueryEntityPublish($alias): QueryBuilder
+    {
+        return $this->createQueryBuilder($alias)
+            ->where("{$alias}.isActif = 1")
+            ->andWhere("{$alias}.isDraft = 0")
+            ->andWhere("{$alias}.publishedAt < :today")
+            ->setParameter('today', new DateTime());
+    }
 
-//    public function findOneBySomeField($value): ?Node
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    protected function getNodeClass(): string
+    {
+        return Node::class;
+    }
 }

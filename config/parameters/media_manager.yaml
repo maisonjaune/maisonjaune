@@ -1,6 +1,7 @@
 parameters:
   media:
-    directory: '%kernel.project_dir%/public/media'
+    directory: '%kernel.project_dir%/public'
+    public_directory: 'media'
     contexts:
       default:
         providers:

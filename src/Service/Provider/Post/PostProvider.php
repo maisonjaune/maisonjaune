@@ -2,11 +2,11 @@
 
 namespace App\Service\Provider\Post;
 
-use App\Repository\Node\CategoryRepository;
+use App\Entity\Node\Post;
 use App\Repository\Node\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\QueryException;
 
 class PostProvider implements PostProviderInterface
 {
@@ -14,15 +14,18 @@ class PostProvider implements PostProviderInterface
 
     public function __construct(
         private PostRepository $postRepository,
-        private CategoryRepository $categoryRepository,
     )
     {
         $this->registrer = new ArrayCollection();
     }
 
-    public function findMain(): Collection
+    /**
+     * @return Post[]
+     * @throws QueryException
+     */
+    public function findLastSticky(): array
     {
-        $posts = $this->postRepository->findMain($this->getCriteria());
+        $posts = $this->postRepository->findLastSticky($this->getCriteria());
         $this->addPostToRegistrer($posts);
         return $posts;
     }

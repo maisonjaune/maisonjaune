@@ -2,9 +2,12 @@
 
 namespace App\Service\Provider\Post;
 
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Node\Post;
 
 interface PostProviderInterface
 {
-    public function findMain(): Collection;
+    /**
+     * @return Post[]
+     */
+    public function findLastSticky(): array;
 }

@@ -11,6 +11,8 @@ class MediaConfigurator
 {
     private string $directory;
 
+    private string $publicDirectory;
+
     /**
      * @var ContextConfigurator[]
      */
@@ -24,6 +26,7 @@ class MediaConfigurator
     public function __construct(array $parameters)
     {
         $this->directory = $parameters['directory'];
+        $this->publicDirectory = $parameters['public_directory'];
 
         foreach ($parameters['contexts'] as $key => $contextParameters) {
             $this->contexts[$key] = new ContextConfigurator($contextParameters);
@@ -37,6 +40,19 @@ class MediaConfigurator
     public function getDirectory(): string
     {
         return $this->directory;
+    }
+
+    public function getPublicDirectory(): string
+    {
+        return $this->publicDirectory;
+    }
+
+    public function getFullDirectory(): string
+    {
+        return implode(DIRECTORY_SEPARATOR, [
+            rtrim($this->getDirectory()),
+            ltrim($this->getPublicDirectory())
+        ]);
     }
 
     public function getContextConfigurator(ContextEnum $context): ContextConfigurator

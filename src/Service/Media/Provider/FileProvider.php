@@ -32,7 +32,7 @@ class FileProvider implements MediaProviderInterface
     protected function getPath(Media $media): string
     {
         return implode(DIRECTORY_SEPARATOR, [
-            rtrim($this->mediaConfigurator->getDirectory()),
+            rtrim($this->mediaConfigurator->getFullDirectory()),
             ltrim($media->getPath())
         ]);
     }
