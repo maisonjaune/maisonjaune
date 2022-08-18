@@ -2,9 +2,9 @@
 
 namespace App\Service\Media\ImageManipulator;
 
-use App\Entity\Media;
+use Symfony\Component\HttpFoundation\File\File;
 
 interface ImageManipulatorInterface
 {
-    public function getPath(Media $media, ?string $filterName = null): string;
+    public function get(File $file, string $filterName): File;
 }

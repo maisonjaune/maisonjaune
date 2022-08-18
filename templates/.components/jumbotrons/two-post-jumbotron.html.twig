@@ -3,8 +3,8 @@
     <div class="d-flex flex-column flex-md-row">
         <a href="#" class="post">
             <picture>
-                <source srcset="{{ this.mainPost.image | media_url('post.jumbotron.primary.filter') }}" media="(min-width: 768px)">
-                <img class="img-fluid" src="{{ this.mainPost.image | media_url('post.jumbotron.mobile.filter') }}" alt="{{ this.mainPost.title }}" />
+                <source srcset="{{ this.mainPost.image | media_url('post.jumbotron.primary') }}" media="(min-width: 768px)">
+                <img class="img-fluid" src="{{ this.mainPost.image | media_url('post.jumbotron.mobile') }}" alt="{{ this.mainPost.title }}" />
             </picture>
             <div class="shadow">
                 <div class="container">
@@ -20,8 +20,8 @@
         </a>
         <a href="#" class="post">
             <picture>
-                <source srcset="{{ this.secondaryPost.image | media_url('post.jumbotron.secondary.filter') }}" media="(min-width: 768px)">
-                <img class="img-fluid" src="{{ this.secondaryPost.image | media_url('post.jumbotron.mobile.filter') }}" alt="{{ this.secondaryPost.title }}" />
+                <source srcset="{{ this.secondaryPost.image | media_url('post.jumbotron.secondary') }}" media="(min-width: 768px)">
+                <img class="img-fluid" src="{{ this.secondaryPost.image | media_url('post.jumbotron.mobile') }}" alt="{{ this.secondaryPost.title }}" />
             </picture>
             <div class="shadow">
                 <div class="container">

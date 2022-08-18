@@ -6,5 +6,5 @@ use App\Entity\Media;
 
 interface MediaPackageInterface
 {
-    public function getUrl(Media $media): string;
+    public function getUrl(Media $media, ?string $filter = null): string;
 }

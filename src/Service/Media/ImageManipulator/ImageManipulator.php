@@ -2,28 +2,27 @@
 
 namespace App\Service\Media\ImageManipulator;
 
-use App\Entity\Media;
+use App\Service\Media\Configurator\ImageFilterConfigurator;
 use App\Service\Media\Exception\UndefinedImageFilterException;
-use App\Service\Media\MediaManagerInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class ImageManipulator implements ImageManipulatorInterface
 {
     public function __construct(
-        private ContainerInterface    $locator,
-        private MediaManagerInterface $mediaManager,
+        private ContainerInterface      $locator,
+        private ImageFilterConfigurator $imageFilterConfigurator
     )
     {
     }
 
-    public function getPath(Media $media, ?string $filterName = null): string
+    public function get(File $file, string $filterName): File
     {
-        $provider = $this->mediaManager->getProvider($media);
-        $file = $provider->getFile($media);
+        $configuration = $this->imageFilterConfigurator->getConfiguration($filterName);
 
-        dd($file->getPathname());
+        $filter = $this->getFilter($configuration->getService());
 
-        return 'https://i.picsum.photos/id/309/800/600.jpg?hmac=uBW91qg2BVnxmsdjVXLN4K5jSBIsB-53cWHtQUHz5ak';
+        return $filter->handle($file, $configuration->getArguments());
     }
 
     public function getFilter(string $filterName): ImageFilterInterface
