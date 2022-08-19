@@ -25,7 +25,6 @@ class MediaPackage implements MediaPackageInterface
             $file = $this->imageManipulator->get($file, $filter);
         }
 
-        return '/' . rtrim($this->mediaConfigurator->getPublicDirectory(), '/') . '/' . $file->getFilename();
+        return preg_replace('#^(' . $this->mediaConfigurator->getDirectory() . ')#', '', $file->getPathname());
     }
-
 }
