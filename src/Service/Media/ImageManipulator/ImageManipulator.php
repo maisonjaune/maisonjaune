@@ -3,16 +3,13 @@
 namespace App\Service\Media\ImageManipulator;
 
 use App\Service\Media\Configurator\ImageFilterConfigurator;
-use App\Service\Media\Exception\UndefinedImageFilterException;
-use Psr\Container\ContainerInterface;
+use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\ImageManager as InterventionImageManager;
 use Symfony\Component\HttpFoundation\File\File;
 
-class ImageManipulator implements ImageManipulatorInterface
+class ImageManipulator extends InterventionImageManager implements ImageManipulatorInterface
 {
-    public function __construct(
-        private ContainerInterface      $locator,
-        private ImageFilterConfigurator $imageFilterConfigurator
-    )
+    public function __construct(private ImageFilterConfigurator $imageFilterConfigurator)
     {
     }
 
@@ -20,17 +17,20 @@ class ImageManipulator implements ImageManipulatorInterface
     {
         $configuration = $this->imageFilterConfigurator->getConfiguration($filterName);
 
-        $filter = $this->getFilter($configuration->getService());
+        $image = $this->make($file->getPathname());
 
-        return $filter->handle($file, $configuration->getArguments());
+        $filter = $this->getFilter($configuration);
+
+        $image->filter($filter);
+
+        // TODO: Transformer l'image en File.
+
+        return $file;
     }
 
-    public function getFilter(string $filterName): ImageFilterInterface
+    private function getFilter(ImageFilterConfiguration $configuration): FilterInterface
     {
-        if (!$this->locator->has($filterName)) {
-            throw new UndefinedImageFilterException($filterName);
-        }
-
-        return $this->locator->get($filterName);
+        $service = $configuration->getService();
+        return new $service($configuration->getArguments());
     }
 }

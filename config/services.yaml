@@ -29,10 +29,6 @@ services:
             tags:
                 - { name: 'media.provider' }
 
-        App\Service\Media\ImageManipulator\ImageFilterInterface:
-            tags:
-                - { name: 'image.filter' }
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -63,7 +59,3 @@ services:
     App\Service\Media\MediaManagerInterface:
         class: App\Service\Media\MediaManager
         arguments: [!tagged_locator { tag: 'media.provider', default_index_method: 'getName' }]
-
-    App\Service\Media\ImageManipulator\ImageManipulatorInterface:
-        class: App\Service\Media\ImageManipulator\ImageManipulator
-        arguments: [!tagged_locator { tag: 'image.filter', default_index_method: 'getName' }]

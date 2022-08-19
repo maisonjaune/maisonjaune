@@ -2,19 +2,33 @@
 
 namespace App\Service\Media\ImageManipulator\Filter;
 
-use App\Service\Media\ImageManipulator\ImageFilterInterface;
-use Symfony\Component\HttpFoundation\File\File;
+use Intervention\Image\Constraint;
+use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\Image;
 
-class ResizerFilter implements ImageFilterInterface
+class ResizerFilter implements FilterInterface
 {
-    public static function handle(File $file, ?array $options = null): File
+    private int $width;
+
+    private int $height;
+
+    public function __construct(array $options)
     {
-        // TOTO manipulation de l'image avec les options
-        return $file;
+        $this->width = $options['width'] ?? null;
+        $this->height = $options['height'];
     }
 
-    public static function getName(): string
+    public function applyFilter(Image $image): Image
     {
-        return self::class;
+        if (null !== $this->width && null !== $this->height) {
+            $image->fit($this->width, $this->height);
+        } else if (null !== $this->width) {
+            $image
+                ->resize($this->width, null, function (Constraint $constraint) {
+                    $constraint->aspectRatio();
+                });
+        }
+
+        return $image;
     }
 }

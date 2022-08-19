@@ -3,12 +3,12 @@ parameters:
     filters:
       post.jumbotron.primary:
         service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
-        arguments: [ 1200, 500 ]
+        arguments: { width: 1200, height: 500 }
 
       post.jumbotron.secondary:
         service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
-        arguments: [ 800, 500 ]
+        arguments: { width: 800, height: 500 }
 
       post.jumbotron.mobile:
         service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
-        arguments: [ 750, 400 ]
+        arguments: { width: 750, height: 500 }
