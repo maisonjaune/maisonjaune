@@ -3,8 +3,13 @@
 namespace App\Repository\Node;
 
 use App\Entity\Node\Post;
+use App\Repository\NodeRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\QueryException;
 
 /**
  * @extends ServiceEntityRepository<Post>
@@ -14,53 +19,29 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+class PostRepository extends NodeRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @param Criteria|null $criteria
+     * @return Post[]
+     * @throws QueryException
+     */
+    public function findLastSticky(?Criteria $criteria = null): array
     {
-        parent::__construct($registry, Post::class);
-    }
+        $query = $this->getQueryEntityPublish('p')
+            ->andWhere('p.isSticky = 1')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setMaxResults(2);
 
-    public function add(Post $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        if (null !== $criteria) {
+            $query->addCriteria($criteria);
         }
+
+        return $query->getQuery()->getResult();
     }
 
-    public function remove(Post $entity, bool $flush = false): void
+    protected function getNodeClass(): string
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return Post::class;
     }
-
-//    /**
-//     * @return Post[] Returns an array of Post objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Post
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

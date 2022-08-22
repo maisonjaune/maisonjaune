@@ -1,6 +1,8 @@
 parameters:
-  media:
-    directory: '%kernel.project_dir%/public/media'
+  media_manager:
+    directory: '%kernel.project_dir%/public'
+    public_directory: 'media'
+
     contexts:
       default:
         providers:
@@ -11,4 +13,4 @@ parameters:
           - media.provider.image
 
     providers:
-      media.provider.file: []
+      media.provider.file: [ ]

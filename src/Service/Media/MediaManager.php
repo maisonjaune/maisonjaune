@@ -8,9 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class MediaManager implements MediaManagerInterface
 {
-    public function __construct(
-        private ContainerInterface $locator
-    )
+    public function __construct(private ContainerInterface $locator)
     {
     }
 

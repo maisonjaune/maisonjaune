@@ -1,0 +1,17 @@
+parameters:
+  image_filter:
+    filters:
+      post.jumbotron.primary:
+        service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
+        arguments: { width: 1200, height: 500 }
+        directory: 'post_jumbotron_primary'
+
+      post.jumbotron.secondary:
+        service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
+        arguments: { width: 800, height: 500 }
+        directory: 'post_jumbotron_secondary'
+
+      post.jumbotron.mobile:
+        service: App\Service\Media\ImageManipulator\Filter\ResizerFilter
+        arguments: { width: 750, height: 500 }
+        directory: 'post_jumbotron_mobile'

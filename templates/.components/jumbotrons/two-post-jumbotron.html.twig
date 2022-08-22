@@ -1,0 +1,39 @@
+{# TODO Ajouter les liens vers les articles #}
+<div class="jumbotron home-jumbotron">
+    <div class="d-flex flex-column flex-md-row">
+        <a href="#" class="post">
+            <picture>
+                <source srcset="{{ this.mainPost.image | media_url('post.jumbotron.primary') }}" media="(min-width: 768px)">
+                <img class="img-fluid" src="{{ this.mainPost.image | media_url('post.jumbotron.mobile') }}" alt="{{ this.mainPost.title }}" />
+            </picture>
+            <div class="shadow">
+                <div class="container">
+                    <div class="category">
+                        {# TODO Affichage de la catégorie de l'article #}
+                        CATEGORY
+                    </div>
+                    <div class="title">
+                        {{ this.mainPost.title }}
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="post">
+            <picture>
+                <source srcset="{{ this.secondaryPost.image | media_url('post.jumbotron.secondary') }}" media="(min-width: 768px)">
+                <img class="img-fluid" src="{{ this.secondaryPost.image | media_url('post.jumbotron.mobile') }}" alt="{{ this.secondaryPost.title }}" />
+            </picture>
+            <div class="shadow">
+                <div class="container">
+                    <div class="category">
+                        {# TODO Affichage de la catégorie de l'article #}
+                        CATEGORY
+                    </div>
+                    <div class="title">
+                        {{ this.secondaryPost.title }}
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

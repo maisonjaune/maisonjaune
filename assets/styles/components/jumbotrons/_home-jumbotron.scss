@@ -30,19 +30,19 @@
                     font-weight: bold;
                     text-shadow: 1px 1px 2px $black;
 
-                    @include media-breakpoint-down(lg) {
+                    @include media-breakpoint-up(lg) {
                         font-size: 1.75rem;
                     }
 
-                    @include media-breakpoint-down(md) {
+                    @include media-breakpoint-only(md) {
                         font-size: 1.50rem;
                     }
 
-                    @include media-breakpoint-down(sm) {
+                    @include media-breakpoint-only(sm) {
                         font-size: 1.75rem;
                     }
 
-                    @include media-breakpoint-down(xs) {
+                    @include media-breakpoint-only(xs) {
                         font-size: 1.50rem;
                     }
                 }
