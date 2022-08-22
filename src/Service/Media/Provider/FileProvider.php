@@ -74,14 +74,14 @@ class FileProvider implements MediaProviderInterface
 
     protected function createDirectoryIfNotExist(): void
     {
-        if (!$this->filesystem->exists($this->mediaConfigurator->getDirectory())) {
-            $this->filesystem->mkdir($this->mediaConfigurator->getDirectory());
+        if (!$this->filesystem->exists($this->mediaConfigurator->getFullDirectory())) {
+            $this->filesystem->mkdir($this->mediaConfigurator->getFullDirectory());
         }
     }
 
     protected function getDestinationPath(string $filename): string
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->mediaConfigurator->getDirectory(), $filename]);
+        return implode(DIRECTORY_SEPARATOR, [$this->mediaConfigurator->getFullDirectory(), $filename]);
     }
 
     protected function getUniqueFilename(File $file): string
