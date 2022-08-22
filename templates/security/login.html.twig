@@ -1,42 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends 'page.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+{% block content_primary %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    {{ component('flash') }}
+
+    <div class="mb-3">
+        <div class="card card-connexion">
+            <div class="card-body">
+                <h1 class="card-title p-3">Se connecter</h1>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey | trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {# TODO Revoir les traduction des libellés #}
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-primary">
+                    Se connecter
+                </button>
+                {{ form_end(form) }}
+                <div>
+                    <div class="block block-link">
+                        <div class="title">Mot de passe oublié ?</div>
+
+                        {# TODO Ajout du lien "Mot de passe oublié" #}
+                        <a href="#">
+                            C'est par ici
+                            <span class="fa-stack">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                        </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
+{% endblock %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+{% block content_secondary %}
+    <div class="mb-3">
+        {# TODO Integration du composant card.breves_list.block #}
+    </div>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    {# TODO Integration du composant last_posts.block #}
+{% endblock %}
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+{% block javascripts %}
+    {{ parent() }}
+    {# TODO encore_entry_script_tags('recaptcha') #}
 {% endblock %}
