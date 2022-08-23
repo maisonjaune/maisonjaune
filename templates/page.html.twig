@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page is defined ? page.title : '' }}{% endblock %}
+
+{% block content %}
+    <div class="container pt-5">
+        <div class="mb-5">
+            <div class="row">
+                <div class="col-12 {% if block("content_secondary") is defined %}col-lg-8{% endif %}">
+                    {{ block('content_primary') }}
+                </div>
+                {% if block("content_secondary") is defined %}
+                    <div class="col-12 col-lg-4">
+                        {{ block('content_secondary') }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

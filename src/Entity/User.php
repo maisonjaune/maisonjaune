@@ -9,10 +9,11 @@ use App\Repository\UserRepository;
 use App\Enum\CivilityEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([HasChangedPasswordListener::class])]
-class User implements PasswordAuthenticatedUserInterface, EntityTimestampInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityTimestampInterface
 {
     use EntityTimestampTrait;
 
@@ -56,6 +57,11 @@ class User implements PasswordAuthenticatedUserInterface, EntityTimestampInterfa
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getEmail();
     }
 
     public function getFirstname(): ?string
@@ -170,5 +176,15 @@ class User implements PasswordAuthenticatedUserInterface, EntityTimestampInterfa
         $this->civility = $civility;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return [];
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

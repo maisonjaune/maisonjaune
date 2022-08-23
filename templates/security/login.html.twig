@@ -1,0 +1,55 @@
+{% extends 'page.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content_primary %}
+
+    {{ component('flash') }}
+
+    <div class="mb-3">
+        <div class="card card-connexion">
+            <div class="card-body">
+                <h1 class="card-title p-3">Se connecter</h1>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey | trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {# TODO Revoir les traduction des libellés #}
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-primary">
+                    Se connecter
+                </button>
+                {{ form_end(form) }}
+                <div>
+                    <div class="block block-link">
+                        <div class="title">Mot de passe oublié ?</div>
+
+                        {# TODO Ajout du lien "Mot de passe oublié" #}
+                        <a href="#">
+                            C'est par ici
+                            <span class="fa-stack">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                        </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_secondary %}
+    <div class="mb-3">
+        {# TODO Integration du composant card.breves_list.block #}
+    </div>
+
+    {# TODO Integration du composant last_posts.block #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# TODO encore_entry_script_tags('recaptcha') #}
+{% endblock %}
