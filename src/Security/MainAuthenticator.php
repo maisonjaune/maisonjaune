@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,13 @@ class MainAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_security_login';
+    public const ROUTE_LOGIN = 'app_security_login';
+    public const ROUTE_HOME = 'app_home';
+    public const ROUTE_ADMIN = 'app_admin_dashboard';
 
-    const FORM_EMAIL = 'email';
-    const FORM_PASSWORD = 'password';
-    const FORM_TOKEN = '_token';
+    public const FORM_EMAIL = 'email';
+    public const FORM_PASSWORD = 'password';
+    public const FORM_TOKEN = '_token';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -48,12 +51,15 @@ class MainAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // TODO rediriger l'utilisateur vers la page d'administration si il est admin
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        $user = $token->getUser();
+
+        return $user instanceof User && $user->isMember()
+            ? new RedirectResponse($this->urlGenerator->generate(self::ROUTE_ADMIN))
+            : new RedirectResponse($this->urlGenerator->generate(self::ROUTE_HOME));
     }
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        return $this->urlGenerator->generate(self::ROUTE_LOGIN);
     }
 }
