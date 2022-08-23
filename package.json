@@ -8,6 +8,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "alpinejs": "^3.10.3",
         "bootstrap": "^5.2.0",
         "dotenv-webpack": "^8.0.1",
         "font-awesome": "^4.7.0",
