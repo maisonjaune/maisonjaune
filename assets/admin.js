@@ -6,7 +6,10 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/main.scss';
+import './styles/admin.scss';
+
+import * as $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap';
 
 // Import alpinejs
 import './bootstrap';

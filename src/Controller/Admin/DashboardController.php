@@ -11,8 +11,6 @@ class DashboardController extends AbstractController
 {
     public function __invoke(): Response
     {
-        return $this->render('admin/dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
-        ]);
+        return $this->render('admin/dashboard/index.html.twig');
     }
 }
