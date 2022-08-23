@@ -13,6 +13,7 @@
 
 // Import elements
 @import "~bootstrap/scss/type";
+@import "themes/admin/elements/body";
 
 // Import objects
 @import "~bootstrap/scss/containers";
@@ -20,6 +21,8 @@
 @import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
+@import "themes/admin/components/navbars/topbar";
+@import "themes/admin/components/sidebar";
 
 // Import components
 @import "~bootstrap/scss/alert";

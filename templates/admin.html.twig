@@ -13,8 +13,17 @@
         {% endblock %}
     </head>
     <body>
-        {{ component('admin-topbar') }}
-        {{ block('body') }}
+        <div class="d-flex flex-column h-100">
+            {{ component('admin-topbar') }}
+            <div class="flex-fill">
+                <div class="d-flex flex-row h-100">
+                    {{ component('admin-sidebar') }}
+                    <div class="flex-fill">
+                        {{ block('body') }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
         {% block javascripts %}
             {{ encore_entry_script_tags('admin') }}

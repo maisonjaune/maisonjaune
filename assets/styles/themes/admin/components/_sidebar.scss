@@ -1,0 +1,24 @@
+.sidebar {
+  --sidebar-link-padding-x: 0;
+  --sidebar-link-color: #{$navbar-light-color};
+  --sidebar-link-hover-color: var(--#{$prefix}navbar-hover-color);
+  --sidebar-link-disabled-color: var(--#{$prefix}navbar-disabled-color);
+  
+  min-width: 230px;
+
+  .list {
+    width: 100%;
+
+    .list-item a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: var(--sidebar-link-color);
+      text-decoration: none;
+    }
+  }
+
+  &.sidebar-dark {
+    @extend .bg-dark;
+    --sidebar-link-color: #{$navbar-dark-color};
+  }
+}
