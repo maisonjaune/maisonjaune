@@ -21,23 +21,25 @@ class MainAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_security_login';
 
+    const FORM_EMAIL = 'email';
+    const FORM_PASSWORD = 'password';
+    const FORM_TOKEN = '_token';
+
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email', '');
+        $email = $request->request->get(self::FORM_EMAIL, '');
+        $password = $request->request->get(self::FORM_PASSWORD, '');
+        $csrfToken = $request->request->get(self::FORM_TOKEN);
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
-        return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
-            [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
-            ]
-        );
+        return new Passport(new UserBadge($email), new PasswordCredentials($password), [
+            new CsrfTokenBadge('authenticate', $csrfToken),
+        ]);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -46,9 +48,8 @@ class MainAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // TODO rediriger l'utilisateur vers la page d'administration si il est admin
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     protected function getLoginUrl(Request $request): string
