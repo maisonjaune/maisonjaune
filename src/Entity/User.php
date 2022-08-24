@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityT
     private ?bool $isActif = null;
 
     #[ORM\Column]
-    private ?bool $isMember = null;
+    private bool $isMember;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastConnectionAt = null;
@@ -180,7 +180,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityT
 
     public function getRoles(): array
     {
-        return [];
+        $roles = [];
+
+        if ($this->isMember()) {
+            $roles[] = 'ROLE_MEMBER';
+        }
+
+        return $roles;
     }
 
     public function eraseCredentials()
