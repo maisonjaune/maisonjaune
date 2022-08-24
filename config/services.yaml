@@ -52,6 +52,7 @@ services:
     App\Menu\Admin\MainMenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createSidebarMenu, alias: admin-sidebar }
+            - { name: knp_menu.menu_builder, method: createTopbarMenu, alias: admin-topbar }
 
     App\Service\Media\Configurator\MediaConfigurator:
         arguments: ['%media_manager%']
