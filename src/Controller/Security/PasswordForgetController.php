@@ -8,13 +8,16 @@ use App\Repository\TokenRepository;
 use App\Service\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PasswordForgetController extends AbstractController
 {
     public function __construct(
+        private MailerInterface         $mailer,
         private TokenGeneratorInterface $tokenGenerator,
-        private TokenRepository $tokenRepository,
+        private TokenRepository         $tokenRepository,
     )
     {
     }
@@ -34,6 +37,14 @@ class PasswordForgetController extends AbstractController
 
                 $this->tokenRepository->persist($token, true);
             }
+
+            $this->mailer->send((new Email())
+                ->from('gwennael.jean@gmail.com')
+                ->to($user->getEmail())
+                ->priority(Email::PRIORITY_HIGH)
+                ->subject('Time for Symfony Mailer!')
+                ->text('Sending emails is fun again!')
+                ->html('<p>See Twig integration for better HTML integration!</p>'));
 
             $this->addFlash('success', 'Un mail à été envoyé à cette adresse afin de modifier votre mot de passe.');
 
