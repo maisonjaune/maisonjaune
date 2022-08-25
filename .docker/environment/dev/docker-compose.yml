@@ -6,7 +6,7 @@ services:
 
   web:
     ports:
-      - ${PORT_HTTPD}:80
+      - ${PORT_HTTP}:80
 
   phpmyadmin:
     ports:
