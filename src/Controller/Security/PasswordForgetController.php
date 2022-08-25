@@ -5,10 +5,13 @@ namespace App\Controller\Security;
 use App\Entity\Token;
 use App\Enum\Token\TypeEnum;
 use App\Form\Security\PasswordForgetType;
+use App\Form\Security\PasswordResetType;
 use App\Repository\TokenRepository;
+use App\Repository\UserRepository;
 use App\Service\MailSender\MailSenderInterface;
 use App\Service\MailSender\Parameter;
 use App\Service\TokenGenerator\TokenGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -21,6 +24,7 @@ class PasswordForgetController extends AbstractController
         private MailSenderInterface     $mailSender,
         private TokenGeneratorInterface $tokenGenerator,
         private TokenRepository         $tokenRepository,
+        private UserRepository          $userRepository
     )
     {
     }
@@ -47,7 +51,7 @@ class PasswordForgetController extends AbstractController
                 ->setParameters([
                     'token' => $token
                 ])
-        );
+            );
 
             $this->addFlash('success', 'Un mail à été envoyé à cette adresse afin de modifier votre mot de passe.');
 
@@ -60,9 +64,26 @@ class PasswordForgetController extends AbstractController
     }
 
     #[Route(path: '/mot-de-passe/confirmation/{token}', name: 'app_security_password_conformation', defaults: ['title' => 'Changement de mot de passe'])]
-    #[Route(path: '/inscription/confirmation/mot-de-passe/{token}', name: 'security_inscription_conformation', defaults: ['title' => 'Confirmation d\'inscription'])]
+    #[ParamConverter('token', converter: 'token', options: ['types' => [TypeEnum::PASSWORD_RESET]])]
     public function confirmation(Request $request, Token $token, string $title)
     {
-        dd($token);
+        $form = $this->createForm(PasswordResetType::class, $token->getUser());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->userRepository->persist($token->getUser());
+            $this->tokenRepository->remove($token, true);
+
+            $this->addFlash('success', 'Votre mot de passe a été modifié avec succès');
+
+            return $this->redirectToRoute($token->getUser()->isMember() ? 'app_security_login' : 'app_home');
+        }
+
+        return $this->render('security/password_reset/index.html.twig', [
+            'form' => $form->createView(),
+            'title' => $title,
+        ]);
     }
 }

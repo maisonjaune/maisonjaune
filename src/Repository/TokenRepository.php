@@ -39,20 +39,14 @@ class TokenRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Token[] Returns an array of Token objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findOneByValue(string $value): ?Token
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.value = :value')
+            ->setParameter('value', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
 //    public function findOneBySomeField($value): ?Token
 //    {
