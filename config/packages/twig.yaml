@@ -4,6 +4,10 @@ twig:
     form_themes:
         - 'bootstrap_5_layout.html.twig'
 
+    paths:
+        'templates/.components': 'component'
+        'templates/.emails': 'email'
+
     globals:
         app_version: '%env(APP_VERSION)%'
         google_recatpcha:
