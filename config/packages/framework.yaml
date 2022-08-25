@@ -19,6 +19,9 @@ framework:
     php_errors:
         log: true
 
+    mailer:
+        envelope:
+            sender: '%env(SITE_EMAIL)%'
 when@test:
     framework:
         test: true

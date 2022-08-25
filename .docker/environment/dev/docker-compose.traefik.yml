@@ -27,13 +27,13 @@ services:
       - traefik.http.routers.maisonjaune_maildev.tls=true
       - traefik.http.routers.maisonjaune_maildev.rule=Host(`maildev.maisonjaune.local`)
       - traefik.http.routers.maisonjaune_maildev.entryPoints=websecure
-      - traefik.http.services.maisonjaune_maildev.loadbalancer.server.port=80
+      - traefik.http.services.maisonjaune_maildev.loadbalancer.server.port=1080
 
   traefik:
     image: traefik:v2.3
     ports:
-      - ${PORT_HTTPD}:80
-      - 443:443
+      - ${PORT_HTTP}:80
+      - ${PORT_HTTPS}:443
       - 8080:8080
     volumes:
       - ${DOCKER_SOCK}:/var/run/docker.sock:ro

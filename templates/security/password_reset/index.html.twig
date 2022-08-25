@@ -1,0 +1,28 @@
+{% extends 'page.html.twig' %}
+
+{% block title %}Changement de mot de passe{% endblock %}
+
+{% block content_primary %}
+
+    {{ component('flash') }}
+
+    <div class="card card-connexion">
+        <div class="card-body">
+            <h1 class="card-title p-3">{{ title }}</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary">
+                Continuer
+            </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_secondary %}
+    <div class="mb-3">
+        {# TODO Integration du composant card.breves_list.block #}
+    </div>
+
+    {# TODO Integration du composant last_posts.block #}
+{% endblock %}
