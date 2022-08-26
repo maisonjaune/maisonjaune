@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/dashboard', name: 'app_admin_dashboard')]
+#[Route('/admin', name: 'app_admin_dashboard')]
 class DashboardController extends AbstractController
 {
     public function __invoke(): Response
