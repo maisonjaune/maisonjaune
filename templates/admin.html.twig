@@ -15,11 +15,13 @@
     <body>
         <div class="d-flex flex-column h-100">
             {{ component('admin-topbar') }}
-            <div class="flex-fill">
-                <div class="d-flex flex-row h-100">
+            <div class="h-100">
+                <div class="d-flex flex-row align-items-stretch h-100">
                     {{ component('admin-sidebar') }}
-                    <div class="flex-fill">
-                        {{ block('body') }}
+                    <div class="flex-fill overflow-auto">
+                        <div class="container-fluid">
+                            {{ block('body') }}
+                        </div>
                     </div>
                 </div>
             </div>
