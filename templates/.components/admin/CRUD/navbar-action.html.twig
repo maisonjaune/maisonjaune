@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand bg-light">
+    <div class="container-fluid">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown first last">
+                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" spellcheck="false">
+                    {% trans %}Action List{% endtrans %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end menu_level_1">
+                    <li class="first">
+                        <a href="{{ url_new }}" class="dropdown-item">
+                            {% trans %}Create new{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -5,39 +5,73 @@
 {% block body %}
     <h1>User index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>IsActif</th>
-                <th>IsMember</th>
-                <th>LastConnectionAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.isActif ? 'Yes' : 'No' }}</td>
-                <td>{{ user.isMember ? 'Yes' : 'No' }}</td>
-                <td>{{ user.lastConnectionAt ? user.lastConnectionAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_admin_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="mb-3">
+        {{ component('admin-navbar-action', {
+            url_new: path('app_admin_user_new')
+        }) }}
+    </div>
 
-    <a href="{{ path('app_admin_user_new') }}">Create new</a>
+    <div class="mb-3">
+        {{ component('admin-entity-filter') }}
+    </div>
+
+    <div class="mb-3">
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{% trans %}Firstname{% endtrans %}</th>
+                        <th>{% trans %}Lastname{% endtrans %}</th>
+                        <th>{% trans %}Email{% endtrans %}</th>
+                        <th>{% trans %}IsActif{% endtrans %}</th>
+                        <th>{% trans %}IsMember{% endtrans %}</th>
+                        <th>{% trans %}LastConnectionAt{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.firstname }}</td>
+                            <td>{{ entity.lastname }}</td>
+                            <td>{{ entity.email }}</td>
+                            <td>{{ (entity.isActif ? 'Yes' : 'No') | trans }}</td>
+                            <td>{{ (entity.isMember ? 'Yes' : 'No') | trans }}</td>
+                            <td>{{ entity.lastConnectionAt ? entity.lastConnectionAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {% trans %}Action{% endtrans %}
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('app_admin_user_show', {'id': entity.id}) }}">
+                                                {% trans %}Show{% endtrans %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('app_admin_user_edit', {'id': entity.id}) }}">
+                                                {% trans %}Edit{% endtrans %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('app_admin_user_delete', {'id': entity.id}) }}">
+                                                {% trans %}Delete{% endtrans %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="12">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

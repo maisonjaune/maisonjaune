@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\Admin\EntityProvider;
+use App\Service\Admin\EntityProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +16,20 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/user')]
 class UserController extends AbstractController
 {
-    #[Route('/', name: 'app_admin_user_index', methods: [Request::METHOD_GET])]
-    public function index(UserRepository $userRepository): Response
+    private EntityProviderInterface $entityProvider;
+
+    public function __construct(UserRepository $userRepository)
     {
+        $this->entityProvider = new EntityProvider($userRepository);
+    }
+
+    #[Route('/', name: 'app_admin_user_index', methods: [Request::METHOD_GET])]
+    public function index(Request $request): Response
+    {
+        $entities = $this->entityProvider->getList($request);
+
         return $this->render('admin/user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'entities' => $entities
         ]);
     }
 
