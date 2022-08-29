@@ -15,7 +15,7 @@
     <body>
         <div class="d-flex flex-column h-100">
             {{ component('admin-topbar') }}
-            <div class="h-100">
+            <div class="flex-fill overflow-hidden">
                 <div class="d-flex flex-row align-items-stretch h-100">
                     {{ component('admin-sidebar') }}
                     <div class="flex-fill overflow-auto">
@@ -24,6 +24,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="bg-dark text-light text-end px-2">
+                <small>
+                    {{ app_version }}
+                </small>
             </div>
         </div>
 
