@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\Admin\Filter\FilterType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\Admin\EntityFilter;
 use App\Service\Admin\EntityProvider;
 use App\Service\Admin\EntityProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,10 +28,15 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_admin_user_index', methods: [Request::METHOD_GET])]
     public function index(Request $request): Response
     {
-        $entities = $this->entityProvider->getList($request);
+        $form = $this->createForm(FilterType::class);
+
+        $form->handleRequest($request);
+
+        $entities = $this->entityProvider->getList($request, $form->getData());
 
         return $this->render('admin/user/index.html.twig', [
-            'entities' => $entities
+            'entities' => $entities,
+            'form' => $form->createView(),
         ]);
     }
 

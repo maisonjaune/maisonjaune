@@ -7,12 +7,9 @@
 
     <div class="mb-3">
         {{ component('admin-navbar-action', {
+            form: form,
             url_new: path('app_admin_user_new')
         }) }}
-    </div>
-
-    <div class="mb-3">
-        {{ component('admin-entity-filter') }}
     </div>
 
     <div class="mb-3">
