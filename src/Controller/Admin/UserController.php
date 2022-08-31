@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\Admin\Filter\FilterType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Service\Admin\EntityFilter;
 use App\Service\Admin\EntityProvider;
 use App\Service\Admin\EntityProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;

@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Service\Admin\FilterRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -14,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements FilterRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -48,13 +51,21 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getQueryFilter(Request $request, ?array $parameters = null): Query
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if (null !== $request->get('search')) {
+            $searchCondition = $qb->expr()->orX()
+                ->add('u.firstname LIKE :search')
+                ->add('u.lastname LIKE :search')
+                ->add('u.email LIKE :search');
+
+            $qb
+                ->where($searchCondition)
+                ->setParameter('search', '%' . $request->get('search') . '%');
+        }
+
+        return $qb->getQuery();
+    }
 }

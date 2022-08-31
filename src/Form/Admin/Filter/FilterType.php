@@ -14,7 +14,7 @@ class FilterType extends AbstractType
     {
         $builder
             ->setMethod(Request::METHOD_GET)
-            ->add('query', TextType::class, [
+            ->add('search', TextType::class, [
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Search',
@@ -30,5 +30,10 @@ class FilterType extends AbstractType
             'required' => false,
             'csrf_protection' => false,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return '';
     }
 }
