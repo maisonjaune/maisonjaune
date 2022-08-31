@@ -22,8 +22,6 @@
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
 @import "~bootstrap/scss/transitions";
-@import "themes/admin/components/navbars/topbar";
-@import "themes/admin/components/sidebar";
 
 // Import components
 @import "~bootstrap/scss/alert";
@@ -34,6 +32,9 @@
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/nav";
 @import "~bootstrap/scss/navbar";
+@import "themes/admin/components/sidebar";
+@import "themes/admin/components/navbars/topbar";
+@import "themes/admin/components/table";
 
 // Import utilities
 @import "~bootstrap/scss/helpers/position";
