@@ -6,9 +6,9 @@ use App\Entity\User;
 use App\Form\Admin\Filter\FilterType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Service\Admin\EntityProvider;
-use App\Service\Admin\EntityProviderInterface;
+use App\Service\Admin\FilterRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,21 +17,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/user')]
 class UserController extends AbstractController
 {
-    private EntityProviderInterface $entityProvider;
+    private FilterRepositoryInterface $entityRepository;
 
-    public function __construct(UserRepository $userRepository)
+    private const ROW_PER_PAGE = 30;
+
+    public function __construct(UserRepository $entityRepository)
     {
-        $this->entityProvider = new EntityProvider($userRepository);
+        $this->entityRepository = $entityRepository;
     }
 
     #[Route('/', name: 'app_admin_user_index', methods: [Request::METHOD_GET])]
-    public function index(Request $request): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $form = $this->createForm(FilterType::class);
 
         $form->handleRequest($request);
 
-        $entities = $this->entityProvider->getList($request, $form->getData());
+        $query = $this->entityRepository->getQueryFilter($request, $form->getData());
+
+        $entities = $paginator->paginate($query, $request->query->getInt('page', 1), self::ROW_PER_PAGE);
 
         return $this->render('admin/user/index.html.twig', [
             'entities' => $entities,
