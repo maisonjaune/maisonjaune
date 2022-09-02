@@ -1,3 +1,4 @@
+{% set card_body_classes = ['card-body'] | merge(card_body_classes is defined ? [card_body_classes] : []) | join(' ') %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,7 +21,21 @@
                     {{ component('admin-sidebar') }}
                     <div class="flex-fill overflow-auto">
                         <div class="container-fluid">
-                            {{ block('body') }}
+                            <h1>{{ block('body_title') | trans }}</h1>
+
+                            {% if block('body_navbar') is defined %}
+                                <div class="mb-3">
+                                    {{ block('body_navbar') }}
+                                </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <div class="card">
+                                    <div class="{{ card_body_classes }}">
+                                        {{ block('body_content') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
