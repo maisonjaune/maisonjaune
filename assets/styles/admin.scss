@@ -21,8 +21,7 @@
 @import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
-@import "themes/admin/components/navbars/topbar";
-@import "themes/admin/components/sidebar";
+@import "~bootstrap/scss/transitions";
 
 // Import components
 @import "~bootstrap/scss/alert";
@@ -30,9 +29,14 @@
 @import "~bootstrap/scss/carousel";
 @import "~bootstrap/scss/dropdown";
 @import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/pagination";
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/nav";
 @import "~bootstrap/scss/navbar";
+@import "themes/admin/components/actionbar";
+@import "themes/admin/components/sidebar";
+@import "themes/admin/components/navbars/topbar";
+@import "themes/admin/components/table";
 
 // Import utilities
 @import "~bootstrap/scss/helpers/position";

@@ -16,6 +16,7 @@ class MainMenuBuilder
         $menu = $this->factory->createItem('root');
 
         $menu->addChild('Dashboard', ['route' => 'app_admin_dashboard']);
+        $menu->addChild('User List', ['route' => 'app_admin_user_index']);
 
         return $menu;
     }
