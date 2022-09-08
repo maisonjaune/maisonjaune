@@ -10,6 +10,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class AdminRouteLoader extends Loader
 {
+    /**
+     * @var Collection<AdminCRUDInterface>
+     */
     private Collection $admins;
 
     private const ROUTE_TYPE = 'admin';
@@ -30,7 +33,7 @@ class AdminRouteLoader extends Loader
         $routes = new RouteCollection();
 
         foreach ($this->admins as $admin) {
-            $routes->addCollection($admin->getRouteCollection());
+            $routes->addCollection($admin->getRouter()->createRouteCollection());
         }
 
         return $routes;

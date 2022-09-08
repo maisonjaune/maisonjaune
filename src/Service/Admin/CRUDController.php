@@ -23,10 +23,10 @@ class CRUDController extends AbstractController
 
         $entities = $paginator->paginate($query, $request->query->getInt('page', 1), 30);
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('index'), [
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('index'), $this->admin->getExtraParameters([
             'entities' => $entities,
             'form' => $form->createView(),
-        ]);
+        ]));
     }
 
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -40,22 +40,22 @@ class CRUDController extends AbstractController
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm($this->admin->getTemplateRegistry()->getTemplate('new'), [
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('new'), $this->admin->getExtraParameters([
             'entity' => $entity,
-            'form' => $form,
-        ]);
+            'form' => $form->createView(),
+        ]));
     }
 
     public function show(int $id): Response
     {
         $entity = $this->admin->getEntity($id);
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('show'), [
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('show'), $this->admin->getExtraParameters([
             'entity' => $entity,
-        ]);
+        ]));
     }
 
     public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
@@ -68,13 +68,13 @@ class CRUDController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm( $this->admin->getTemplateRegistry()->getTemplate('edit'), [
+        return $this->render( $this->admin->getTemplateRegistry()->getTemplate('edit'), $this->admin->getExtraParameters([
             'entity' => $entity,
-            'form' => $form,
-        ]);
+            'form' => $form->createView(),
+        ]));
     }
 
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
@@ -87,11 +87,11 @@ class CRUDController extends AbstractController
                 $entityManager->flush();
             }
 
-            return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm($this->admin->getTemplateRegistry()->getTemplate('delete'), [
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('delete'), $this->admin->getExtraParameters([
             'entity' => $entity,
-        ]);
+        ]));
     }
 }

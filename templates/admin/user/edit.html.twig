@@ -13,11 +13,11 @@
         {% trans %}Update{% endtrans %}
     </button>
 
-    <a class="btn btn-primary" href="{{ path('admin_user_index') }}">
+    <a class="btn btn-primary" href="{{ path(router.getRouteName('index')) }}">
         {% trans %}Back to list{% endtrans %}
     </a>
 
-    <a class="btn btn-danger" href="{{ path('admin_user_delete', { id: entity.id }) }}">
+    <a class="btn btn-danger" href="{{ path(router.getRouteName('delete'), { id: entity.id }) }}">
         {% trans %}Delete{% endtrans %}
     </a>
 {% endblock %}

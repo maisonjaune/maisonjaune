@@ -13,14 +13,29 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     private TemplateRegistryInterface $templateRegistry;
 
+    private RouterInterface $router;
+
     public function __construct(protected EntityManagerInterface $entityManager)
     {
         $this->templateRegistry = $this->createTemplateRegistry();
+        $this->router = $this->createRouter();
     }
 
     public function getTemplateRegistry(): TemplateRegistryInterface
     {
         return $this->templateRegistry;
+    }
+
+    public function getExtraParameters(array $parameters = []): array
+    {
+        return array_merge([
+            'router' => $this->getRouter(),
+        ], $parameters);
+    }
+
+    public function getRouter(): RouterInterface
+    {
+        return $this->router;
     }
 
     public function createEntity(): object
@@ -48,12 +63,5 @@ abstract class AdminCRUD implements AdminCRUDInterface
         }
 
         return $this->repository;
-    }
-
-    protected function createRoute(string $path, string $action, array $methods = [Request::METHOD_GET]): Route
-    {
-        return (new Route(sprintf('/admin%s', $path)))
-            ->setMethods($methods)
-            ->setDefault('_controller', $this->getControllerClass() . '::' . $action);
     }
 }
