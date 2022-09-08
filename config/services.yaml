@@ -35,6 +35,10 @@ services:
         tags:
             - { name: routing.loader }
 
+    App\Admin\UserAdmin:
+        tags:
+            - { name: admin.crud }
+
     App\ParamConverter\TokenParamConverter:
         tags:
             - { name: request.param_converter, converter: token }
