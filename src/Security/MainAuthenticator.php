@@ -22,7 +22,7 @@ class MainAuthenticator extends AbstractLoginFormAuthenticator
 
     public const ROUTE_LOGIN = 'app_security_login';
     public const ROUTE_HOME = 'app_home';
-    public const ROUTE_ADMIN = 'app_admin_dashboard';
+    public const ROUTE_ADMIN = 'admin_dashboard';
 
     public const FORM_EMAIL = 'email';
     public const FORM_PASSWORD = 'password';

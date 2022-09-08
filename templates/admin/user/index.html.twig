@@ -9,7 +9,7 @@
 {% block body_navbar %}
     {{ component('admin-navbar-action', {
         form: form,
-        url_new: path('app_admin_user_new')
+        url_new: path('admin_user_new')
     }) }}
 {% endblock %}
 
@@ -44,19 +44,19 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_show', {'id': entity.id}) }}">
+                                   href="{{ path('admin_user_show', {'id': entity.id}) }}">
                                     {% trans %}Show{% endtrans %}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_edit', {'id': entity.id}) }}">
+                                   href="{{ path('admin_user_edit', {'id': entity.id}) }}">
                                     {% trans %}Edit{% endtrans %}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_delete', {'id': entity.id}) }}">
+                                   href="{{ path('admin_user_delete', {'id': entity.id}) }}">
                                     {% trans %}Delete{% endtrans %}
                                 </a>
                             </li>
