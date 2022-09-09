@@ -15,10 +15,15 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     private RouterInterface $router;
 
-    public function __construct(protected EntityManagerInterface $entityManager)
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        private ConfigurationListInterface $configurationList,
+        private PropertyRendererInterface $propertyRenderer,
+    )
     {
         $this->templateRegistry = $this->createTemplateRegistry();
         $this->router = $this->createRouter();
+        $this->configurationList($configurationList);
     }
 
     public function getTemplateRegistry(): TemplateRegistryInterface
@@ -29,7 +34,9 @@ abstract class AdminCRUD implements AdminCRUDInterface
     public function getExtraParameters(array $parameters = []): array
     {
         return array_merge([
+            'configurationList' => $this->configurationList,
             'router' => $this->getRouter(),
+            'propertyRenderer' => $this->propertyRenderer,
         ], $parameters);
     }
 

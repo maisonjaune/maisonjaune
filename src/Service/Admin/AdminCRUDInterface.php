@@ -6,6 +6,8 @@ interface AdminCRUDInterface
 {
     public function getEntityClass(): string;
 
+    public function configurationList(ConfigurationListInterface $configurationList): void;
+
     public function createEntity(): object;
 
     public function getEntity(int $id): ?object;
