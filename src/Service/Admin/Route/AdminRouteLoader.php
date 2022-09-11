@@ -23,7 +23,7 @@ class AdminRouteLoader extends Loader
         $this->admins = new ArrayCollection();
     }
 
-    public function addAdminCrud(AdminCRUDInterface $admin)
+    public function addAdminCrud(AdminCRUDInterface $admin, array $tag)
     {
         $this->admins->add($admin);
     }

@@ -20,7 +20,9 @@ class AdminRouteLoaderCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('admin.crud');
 
         foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall('addAdminCrud', [new Reference($id)]);
+            foreach ($tags as $tag) {
+                $definition->addMethodCall('addAdminCrud', [new Reference($id), $tag]);
+            }
         }
     }
 }

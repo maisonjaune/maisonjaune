@@ -11,8 +11,6 @@ use App\Service\Admin\Configuration\Field\BooleanField;
 use App\Service\Admin\Configuration\Field\DateTimeField;
 use App\Service\Admin\Configuration\Field\StringField;
 use App\Service\Admin\ConfigurationListInterface;
-use App\Service\Admin\Router;
-use App\Service\Admin\RouterInterface;
 use App\Service\Admin\TemplateRegistry;
 use App\Service\Admin\TemplateRegistryInterface;
 
@@ -31,16 +29,6 @@ class UserAdmin extends AdminCRUD
             ->add(new DateTimeField('createdAt', 'CreatedAt'));
     }
 
-    public function createRouter(): RouterInterface
-    {
-        return (new Router('user', UserController::class))
-            ->addRouteIndex('/user')
-            ->addRouteNew('/user/new')
-            ->addRouteShow('/user/{id}')
-            ->addRouteEdit('/user/{id}/edit')
-            ->addRouteDelete('/user/{id}/delete');
-    }
-
     public function createTemplateRegistry(): TemplateRegistryInterface
     {
         return (new TemplateRegistry())
@@ -51,13 +39,23 @@ class UserAdmin extends AdminCRUD
             ->setTemplateDelete('admin/user/delete.html.twig');
     }
 
+    public function getEntityClass(): string
+    {
+        return User::class;
+    }
+
+    public function getControllerClass(): string
+    {
+        return UserController::class;
+    }
+
     public function getFormType(): string
     {
         return UserType::class;
     }
 
-    public function getEntityClass(): string
+    public function getRouterPrefix(): string
     {
-        return User::class;
+        return 'user';
     }
 }

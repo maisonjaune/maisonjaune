@@ -61,10 +61,18 @@ class Router implements RouterInterface
         return $this->addRoute('delete', $path, $methods);
     }
 
-    public function addRoute(string $name, string $path, array $methods = null): self
+    public function addRoute(string $name, string $path, array $methods = [Request::METHOD_GET]): self
     {
         $this->routeNames[$name] = sprintf('admin_%s_%s', $this->type, $name);
         $this->routes[$name] = $this->createRoute($path, $name, $methods);
+
+        return $this;
+    }
+
+    public function removeRoute(string $name): self
+    {
+        unset($this->routeNames[$name]);
+        unset($this->routes[$name]);
 
         return $this;
     }
