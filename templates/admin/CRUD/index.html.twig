@@ -1,8 +1,8 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}{% trans %}User List{% endtrans %}{% endblock %}
+{% block title %}{{ title | trans }}{% endblock %}
 
-{% block body_title %}{% trans %}User List{% endtrans %}{% endblock %}
+{% block body_title %}{{ title | trans }}{% endblock %}
 
 {% set card_body_classes = 'p-0' %}
 

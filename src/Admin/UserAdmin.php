@@ -11,8 +11,6 @@ use App\Service\Admin\Configuration\Field\BooleanField;
 use App\Service\Admin\Configuration\Field\DateTimeField;
 use App\Service\Admin\Configuration\Field\StringField;
 use App\Service\Admin\ConfigurationListInterface;
-use App\Service\Admin\TemplateRegistry;
-use App\Service\Admin\TemplateRegistryInterface;
 
 class UserAdmin extends AdminCRUD
 {
@@ -27,16 +25,6 @@ class UserAdmin extends AdminCRUD
             ->add(new BooleanField('isMember', 'IsMember'))
             ->add(new ArrayField('roles', 'Roles'))
             ->add(new DateTimeField('createdAt', 'CreatedAt'));
-    }
-
-    public function createTemplateRegistry(): TemplateRegistryInterface
-    {
-        return (new TemplateRegistry())
-            ->setTemplateIndex('admin/CRUD/index.html.twig')
-            ->setTemplateNew('admin/user/new.html.twig')
-            ->setTemplateShow('admin/user/show.html.twig')
-            ->setTemplateEdit('admin/user/edit.html.twig')
-            ->setTemplateDelete('admin/user/delete.html.twig');
     }
 
     public function getEntityClass(): string

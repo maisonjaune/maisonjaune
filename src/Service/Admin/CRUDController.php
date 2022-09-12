@@ -23,7 +23,8 @@ class CRUDController extends AbstractController
 
         $entities = $paginator->paginate($query, $request->query->getInt('page', 1), 30);
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('index'), $this->admin->getExtraParameters([
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('index')->getPath(), $this->admin->getExtraParameters([
+            'title' => $this->admin->getTemplateRegistry()->getTemplate('index')->getTitle(),
             'entities' => $entities,
             'form' => $form->createView(),
         ]));
@@ -43,7 +44,8 @@ class CRUDController extends AbstractController
             return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('new'), $this->admin->getExtraParameters([
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('new')->getPath(), $this->admin->getExtraParameters([
+            'title' => $this->admin->getTemplateRegistry()->getTemplate('new')->getTitle(),
             'entity' => $entity,
             'form' => $form->createView(),
         ]));
@@ -53,7 +55,8 @@ class CRUDController extends AbstractController
     {
         $entity = $this->admin->getEntity($id);
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('show'), $this->admin->getExtraParameters([
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('show')->getPath(), $this->admin->getExtraParameters([
+            'title' => $this->admin->getTemplateRegistry()->getTemplate('show')->getTitle(),
             'entity' => $entity,
         ]));
     }
@@ -71,7 +74,8 @@ class CRUDController extends AbstractController
             return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render( $this->admin->getTemplateRegistry()->getTemplate('edit'), $this->admin->getExtraParameters([
+        return $this->render( $this->admin->getTemplateRegistry()->getTemplate('edit')->getPath(), $this->admin->getExtraParameters([
+            'title' => $this->admin->getTemplateRegistry()->getTemplate('edit')->getTitle(),
             'entity' => $entity,
             'form' => $form->createView(),
         ]));
@@ -90,7 +94,8 @@ class CRUDController extends AbstractController
             return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render($this->admin->getTemplateRegistry()->getTemplate('delete'), $this->admin->getExtraParameters([
+        return $this->render($this->admin->getTemplateRegistry()->getTemplate('delete')->getPath(), $this->admin->getExtraParameters([
+            'title' => $this->admin->getTemplateRegistry()->getTemplate('delete')->getTitle(),
             'entity' => $entity,
         ]));
     }

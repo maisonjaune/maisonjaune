@@ -3,6 +3,9 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\Exception\MissingFilterRepositoryException;
+use App\Service\Admin\Template\Template;
+use App\Service\Admin\Template\TemplateRegistry;
+use App\Service\Admin\Template\TemplateRegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AdminCRUD implements AdminCRUDInterface
@@ -19,10 +22,11 @@ abstract class AdminCRUD implements AdminCRUDInterface
         private readonly PropertyRendererInterface  $propertyRenderer,
     )
     {
-        $this->templateRegistry = $this->createTemplateRegistry();
         $this->router = $this->createRouter();
+        $this->templateRegistry = $this->createTemplateRegistry();
         $this->configurationList($this->configurationList);
         $this->configurationRouter($this->router);
+        $this->configurationTemplateRegistry($this->templateRegistry);
     }
 
     private function createRouter(): RouterInterface
@@ -33,6 +37,16 @@ abstract class AdminCRUD implements AdminCRUDInterface
             ->addRouteShow(sprintf('/%s/{id}', $this->getRouterPrefix()))
             ->addRouteEdit(sprintf('/%s/{id}/edit', $this->getRouterPrefix()))
             ->addRouteDelete(sprintf('/%s/{id}/delete', $this->getRouterPrefix()));
+    }
+
+    public function createTemplateRegistry(): TemplateRegistryInterface
+    {
+        return (new TemplateRegistry())
+            ->setTemplateIndex(new Template('admin/CRUD/index.html.twig', ucfirst(strtolower($this->getRouterPrefix())) . ' List'))
+            ->setTemplateNew(new Template('admin/CRUD/new.html.twig', ucfirst(strtolower($this->getRouterPrefix())) . ' New'))
+            ->setTemplateShow(new Template('admin/CRUD/show.html.twig', ucfirst(strtolower($this->getRouterPrefix())) . ' Show'))
+            ->setTemplateEdit(new Template('admin/CRUD/edit.html.twig', ucfirst(strtolower($this->getRouterPrefix())) . ' Edit'))
+            ->setTemplateDelete(new Template('admin/CRUD/delete.html.twig', ucfirst(strtolower($this->getRouterPrefix())) . ' Delete'));
     }
 
     public function createEntity(): object
@@ -82,6 +96,10 @@ abstract class AdminCRUD implements AdminCRUDInterface
     }
 
     public function configurationRouter(RouterInterface $router): void
+    {
+    }
+
+    public function configurationTemplateRegistry(TemplateRegistryInterface $templateRegistry): void
     {
     }
 }

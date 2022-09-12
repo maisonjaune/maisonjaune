@@ -2,6 +2,8 @@
 
 namespace App\Service\Admin;
 
+use App\Service\Admin\Template\TemplateRegistryInterface;
+
 interface AdminCRUDInterface
 {
     public function getEntityClass(): string;
