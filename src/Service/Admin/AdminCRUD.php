@@ -5,15 +5,19 @@ namespace App\Service\Admin;
 use App\Service\Admin\Exception\MissingFilterRepositoryException;
 use App\Service\Admin\Route\RouterFactory;
 use App\Service\Admin\Route\RouterInterface;
+use App\Service\Admin\Security\Security;
+use App\Service\Admin\Security\SecurityFactory;
 use App\Service\Admin\Template\TemplateRegistryFactory;
 use App\Service\Admin\Template\TemplateRegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AdminCRUD implements AdminCRUDInterface
 {
-    private TemplateRegistryInterface $templateRegistry;
+    private Security $security;
 
     private RouterInterface $router;
+
+    private TemplateRegistryInterface $templateRegistry;
 
     private ?FilterRepositoryInterface $repository = null;
 
@@ -21,10 +25,12 @@ abstract class AdminCRUD implements AdminCRUDInterface
         protected readonly EntityManagerInterface   $entityManager,
         private readonly ConfigurationListInterface $configurationList,
         private readonly PropertyRendererInterface  $propertyRenderer,
+        readonly SecurityFactory                    $securityFactory,
         readonly RouterFactory                      $routerFactory,
         readonly TemplateRegistryFactory            $templateRegistryFactory,
     )
     {
+        $this->security = $securityFactory->create($this->getRouterPrefix());
         $this->router = $routerFactory->create($this->getRouterPrefix(), $this->getControllerClass());
         $this->templateRegistry = $templateRegistryFactory->create($this->getRouterPrefix());
         $this->configurationList($this->configurationList);
@@ -62,10 +68,21 @@ abstract class AdminCRUD implements AdminCRUDInterface
     public function getExtraParameters(array $parameters = []): array
     {
         return array_merge([
-            'configurationList' => $this->configurationList,
+            'security' => $this->getSecurity(),
+            'configurationList' => $this->getConfigurationList(),
             'router' => $this->getRouter(),
-            'propertyRenderer' => $this->propertyRenderer,
+            'propertyRenderer' => $this->getPropertyRenderer(),
         ], $parameters);
+    }
+
+    public function getSecurity(): Security
+    {
+        return $this->security;
+    }
+
+    public function getConfigurationList(): ConfigurationListInterface
+    {
+        return $this->configurationList;
     }
 
     public function getRouter(): RouterInterface
@@ -76,6 +93,11 @@ abstract class AdminCRUD implements AdminCRUDInterface
     public function getTemplateRegistry(): TemplateRegistryInterface
     {
         return $this->templateRegistry;
+    }
+
+    public function getPropertyRenderer(): PropertyRendererInterface
+    {
+        return $this->propertyRenderer;
     }
 
     public function configurationRouter(RouterInterface $router): void

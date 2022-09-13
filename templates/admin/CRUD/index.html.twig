@@ -9,7 +9,7 @@
 {% block body_navbar %}
     {{ component('admin-navbar-action', {
         form: form,
-        url_new: router.hasRoute('new') ? path(router.getRoute('new').name) : null
+        url_new: security.can('new') and router.hasRoute('new') ? path(router.getRoute('new').name) : null
     }) }}
 {% endblock %}
 
@@ -36,7 +36,7 @@
                             {% trans %}Action{% endtrans %}
                         </button>
                         <ul class="dropdown-menu">
-                            {% if router.hasRoute('show') %}
+                            {% if security.can('show') and router.hasRoute('show') %}
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ path(router.getRoute('show').name, {'id': entity.id}) }}">
@@ -44,7 +44,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            {% if router.hasRoute('edit') %}
+                            {% if security.can('edit') and router.hasRoute('edit') %}
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ path(router.getRoute('edit').name, {'id': entity.id}) }}">
@@ -52,7 +52,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            {% if router.hasRoute('delete') %}
+                            {% if security.can('delete') and router.hasRoute('delete') %}
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ path(router.getRoute('delete').name, {'id': entity.id}) }}">

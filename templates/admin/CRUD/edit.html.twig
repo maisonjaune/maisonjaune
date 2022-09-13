@@ -13,13 +13,13 @@
         {% trans %}Update{% endtrans %}
     </button>
 
-    {% if router.hasRoute('index') %}
+    {% if security.can('index') and router.hasRoute('index') %}
         <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
             {% trans %}Back to list{% endtrans %}
         </a>
     {% endif %}
 
-    {% if router.hasRoute('delete') %}
+    {% if security.can('delete') and router.hasRoute('delete') %}
         <a class="btn btn-danger" href="{{ path(router.getRoute('delete').name, { id: entity.id }) }}">
             {% trans %}Delete{% endtrans %}
         </a>

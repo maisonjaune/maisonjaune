@@ -8,6 +8,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CRUDController extends AbstractController
 {
@@ -15,6 +16,10 @@ class CRUDController extends AbstractController
 
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        if (!$this->admin->getSecurity()->can('index')) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createForm(FilterType::class);
 
         $form->handleRequest($request);
@@ -32,6 +37,10 @@ class CRUDController extends AbstractController
 
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->admin->getSecurity()->can('new')) {
+            throw new AccessDeniedException();
+        }
+
         $entity = $this->admin->createEntity();
 
         $form = $this->createForm($this->admin->getFormType(), $entity);
@@ -53,6 +62,10 @@ class CRUDController extends AbstractController
 
     public function show(int $id): Response
     {
+        if (!$this->admin->getSecurity()->can('show')) {
+            throw new AccessDeniedException();
+        }
+
         $entity = $this->admin->getEntity($id);
 
         return $this->render($this->admin->getTemplateRegistry()->getTemplate('show')->getPath(), $this->admin->getExtraParameters([
@@ -63,6 +76,10 @@ class CRUDController extends AbstractController
 
     public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+        if (!$this->admin->getSecurity()->can('edit')) {
+            throw new AccessDeniedException();
+        }
+
         $entity = $this->admin->getEntity($id);
 
         $form = $this->createForm($this->admin->getFormType(), $entity);
@@ -83,6 +100,10 @@ class CRUDController extends AbstractController
 
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+        if (!$this->admin->getSecurity()->can('delete')) {
+            throw new AccessDeniedException();
+        }
+
         $entity = $this->admin->getEntity($id);
 
         if ($request->getMethod() == Request::METHOD_POST) {

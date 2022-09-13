@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\Route\RouterInterface;
+use App\Service\Admin\Security\Security;
 use App\Service\Admin\Template\TemplateRegistryInterface;
 
 interface AdminCRUDInterface
@@ -30,4 +31,6 @@ interface AdminCRUDInterface
     public function getControllerClass(): string;
 
     public function getRouterPrefix(): string;
+
+    public function getSecurity(): Security;
 }
