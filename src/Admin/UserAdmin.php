@@ -11,9 +11,19 @@ use App\Service\Admin\Configuration\Field\BooleanField;
 use App\Service\Admin\Configuration\Field\DateTimeField;
 use App\Service\Admin\Configuration\Field\StringField;
 use App\Service\Admin\ConfigurationListInterface;
+use App\Service\Admin\Route\RouterInterface;
 
 class UserAdmin extends AdminCRUD
 {
+    public function configurationRouter(RouterInterface $router): void
+    {
+        $router
+            ->removeRoute('new')
+            ->removeRoute('show')
+            ->removeRoute('edit')
+            ->removeRoute('delete');
+    }
+
     public function configurationList(ConfigurationListInterface $configurationList): void
     {
         $configurationList

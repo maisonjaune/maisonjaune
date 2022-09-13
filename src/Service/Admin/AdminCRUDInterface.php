@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin;
 
+use App\Service\Admin\Route\RouterInterface;
 use App\Service\Admin\Template\TemplateRegistryInterface;
 
 interface AdminCRUDInterface
@@ -19,8 +20,6 @@ interface AdminCRUDInterface
     public function getFormType(): string;
 
     public function getRepository(): FilterRepositoryInterface;
-
-    public function createTemplateRegistry(): TemplateRegistryInterface;
 
     public function getTemplateRegistry(): TemplateRegistryInterface;
 

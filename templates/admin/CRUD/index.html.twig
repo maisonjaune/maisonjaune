@@ -9,7 +9,7 @@
 {% block body_navbar %}
     {{ component('admin-navbar-action', {
         form: form,
-        url_new: path(router.getRouteName('new'))
+        url_new: router.hasRoute('new') ? path(router.getRoute('new').name) : null
     }) }}
 {% endblock %}
 
@@ -36,24 +36,30 @@
                             {% trans %}Action{% endtrans %}
                         </button>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ path(router.getRouteName('show'), {'id': entity.id}) }}">
-                                    {% trans %}Show{% endtrans %}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ path(router.getRouteName('edit'), {'id': entity.id}) }}">
-                                    {% trans %}Edit{% endtrans %}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ path(router.getRouteName('delete'), {'id': entity.id}) }}">
-                                    {% trans %}Delete{% endtrans %}
-                                </a>
-                            </li>
+                            {% if router.hasRoute('show') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('show').name, {'id': entity.id}) }}">
+                                        {% trans %}Show{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if router.hasRoute('edit') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('edit').name, {'id': entity.id}) }}">
+                                        {% trans %}Edit{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if router.hasRoute('delete') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('delete').name, {'id': entity.id}) }}">
+                                        {% trans %}Delete{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </td>

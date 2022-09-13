@@ -17,16 +17,22 @@
     </table>
 
     <div class="action-bar">
-        <a class="btn btn-primary" href="{{ path(router.getRouteName('index')) }}">
-            {% trans %}Back to list{% endtrans %}
-        </a>
+        {% if router.hasRoute('index') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+                {% trans %}Back to list{% endtrans %}
+            </a>
+        {% endif %}
 
-        <a class="btn btn-primary" href="{{ path(router.getRouteName('edit'), {'id': entity.id}) }}">
-            {% trans %}Edit{% endtrans %}
-        </a>
+        {% if router.hasRoute('edit') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('edit').name, {'id': entity.id}) }}">
+                {% trans %}Edit{% endtrans %}
+            </a>
+        {% endif %}
 
-        <a class="btn btn-danger" href="{{ path(router.getRouteName('delete'), { id: entity.id }) }}">
-            {% trans %}Delete{% endtrans %}
-        </a>
+        {% if router.hasRoute('delete') %}
+            <a class="btn btn-danger" href="{{ path(router.getRoute('delete').name, { id: entity.id }) }}">
+                {% trans %}Delete{% endtrans %}
+            </a>
+        {% endif %}
     </div>
 {% endblock %}

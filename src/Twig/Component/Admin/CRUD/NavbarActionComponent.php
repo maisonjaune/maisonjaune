@@ -10,5 +10,5 @@ class NavbarActionComponent
 {
     public ?FormView $form;
 
-    public string $url_new;
+    public ?string $url_new = null;
 }
