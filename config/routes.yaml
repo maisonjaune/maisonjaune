@@ -1,3 +1,7 @@
+admin:
+    resource: .
+    type: admin
+
 controllers:
     resource: ../src/Controller/
     type: attribute

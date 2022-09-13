@@ -1,0 +1,32 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% block body_content %}
+    <table class="table">
+        <tbody>
+        {% for field in configurationList.getFields() %}
+            <tr>
+                <th>{{ field.label | trans }}</th>
+                <td>{{ propertyRenderer.render(entity, field) | raw }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="action-bar">
+        <a class="btn btn-primary" href="{{ path(router.getRouteName('index')) }}">
+            {% trans %}Back to list{% endtrans %}
+        </a>
+
+        <a class="btn btn-primary" href="{{ path(router.getRouteName('edit'), {'id': entity.id}) }}">
+            {% trans %}Edit{% endtrans %}
+        </a>
+
+        <a class="btn btn-danger" href="{{ path(router.getRouteName('delete'), { id: entity.id }) }}">
+            {% trans %}Delete{% endtrans %}
+        </a>
+    </div>
+{% endblock %}

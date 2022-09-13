@@ -1,0 +1,23 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% block body_content %}
+    {% set form_id = 'form-user-edit' %}
+
+    {{ include('admin/CRUD/_form.html.twig', { form_id: form_id }) }}
+
+    <button type="submit" class="btn btn-success" form="{{ form_id }}">
+        {% trans %}Update{% endtrans %}
+    </button>
+
+    <a class="btn btn-primary" href="{{ path(router.getRouteName('index')) }}">
+        {% trans %}Back to list{% endtrans %}
+    </a>
+
+    <a class="btn btn-danger" href="{{ path(router.getRouteName('delete'), { id: entity.id }) }}">
+        {% trans %}Delete{% endtrans %}
+    </a>
+{% endblock %}

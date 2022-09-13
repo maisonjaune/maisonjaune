@@ -19,6 +19,7 @@ services:
     App\:
         resource: '../src/'
         exclude:
+            - '../src/Admin/'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
@@ -30,6 +31,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\Admin\Route\AdminRouteLoader:
+        tags:
+            - { name: routing.loader }
+
+    App\Admin\UserAdmin:
+        tags:
+            - { name: admin.crud }
 
     App\ParamConverter\TokenParamConverter:
         tags:

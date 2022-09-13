@@ -1,15 +1,15 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}{% trans %}User List{% endtrans %}{% endblock %}
+{% block title %}{{ title | trans }}{% endblock %}
 
-{% block body_title %}{% trans %}User List{% endtrans %}{% endblock %}
+{% block body_title %}{{ title | trans }}{% endblock %}
 
 {% set card_body_classes = 'p-0' %}
 
 {% block body_navbar %}
     {{ component('admin-navbar-action', {
         form: form,
-        url_new: path('app_admin_user_new')
+        url_new: path(router.getRouteName('new'))
     }) }}
 {% endblock %}
 
@@ -17,24 +17,18 @@
     <table class="table">
         <thead>
         <tr>
-            <th>{% trans %}Firstname{% endtrans %}</th>
-            <th>{% trans %}Lastname{% endtrans %}</th>
-            <th>{% trans %}Email{% endtrans %}</th>
-            <th>{% trans %}IsActif{% endtrans %}</th>
-            <th>{% trans %}IsMember{% endtrans %}</th>
-            <th>{% trans %}LastConnectionAt{% endtrans %}</th>
+            {% for field in configurationList.getFields() %}
+                <th>{{ field.label | trans }}</th>
+            {% endfor %}
             <th class="col-action">{% trans %}Actions{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.firstname }}</td>
-                <td>{{ entity.lastname }}</td>
-                <td>{{ entity.email }}</td>
-                <td>{{ (entity.isActif ? 'Yes' : 'No') | trans }}</td>
-                <td>{{ (entity.isMember ? 'Yes' : 'No') | trans }}</td>
-                <td>{{ entity.lastConnectionAt ? entity.lastConnectionAt|date('Y-m-d H:i:s') : '' }}</td>
+                {% for field in configurationList.getFields() %}
+                    <td>{{ propertyRenderer.render(entity, field) | raw }}</td>
+                {% endfor %}
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -44,19 +38,19 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_show', {'id': entity.id}) }}">
+                                   href="{{ path(router.getRouteName('show'), {'id': entity.id}) }}">
                                     {% trans %}Show{% endtrans %}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_edit', {'id': entity.id}) }}">
+                                   href="{{ path(router.getRouteName('edit'), {'id': entity.id}) }}">
                                     {% trans %}Edit{% endtrans %}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_admin_user_delete', {'id': entity.id}) }}">
+                                   href="{{ path(router.getRouteName('delete'), {'id': entity.id}) }}">
                                     {% trans %}Delete{% endtrans %}
                                 </a>
                             </li>
