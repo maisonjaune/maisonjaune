@@ -22,11 +22,13 @@
                         {% trans %}Action List{% endtrans %}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end menu_level_1">
-                        <li class="first">
-                            <a href="{{ url_new }}" class="dropdown-item">
-                                {% trans %}Create new{% endtrans %}
-                            </a>
-                        </li>
+                        {% if url_new is not null %}
+                            <li class="first">
+                                <a href="{{ url_new }}" class="dropdown-item">
+                                    {% trans %}Create new{% endtrans %}
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

@@ -9,6 +9,15 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
+    role_hierarchy:
+        ROLE_MEMBER:
+            - ROLE_ADMIN_USER_INDEX
+            - ROLE_ADMIN_USER_NEW
+            - ROLE_ADMIN_USER_SHOW
+            - ROLE_ADMIN_USER_EDIT
+            - ROLE_ADMIN_USER_DELETE
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

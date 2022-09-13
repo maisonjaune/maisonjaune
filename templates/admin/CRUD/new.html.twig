@@ -13,7 +13,9 @@
         {% trans %}Add{% endtrans %}
     </button>
 
-    <a class="btn btn-primary" href="{{ path(router.getRouteName('index')) }}">
-        {% trans %}Back to list{% endtrans %}
-    </a>
+    {% if security.can('index') and router.hasRoute('index') %}
+        <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+            {% trans %}Back to list{% endtrans %}
+        </a>
+    {% endif %}
 {% endblock %}
