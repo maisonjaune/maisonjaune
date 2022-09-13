@@ -50,7 +50,7 @@ class CRUDController extends AbstractController
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRoute('index')->getName(), [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render($this->admin->getTemplateRegistry()->getTemplate('new')->getPath(), $this->admin->getExtraParameters([
@@ -88,7 +88,7 @@ class CRUDController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRoute('index')->getName(), [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render( $this->admin->getTemplateRegistry()->getTemplate('edit')->getPath(), $this->admin->getExtraParameters([
@@ -112,7 +112,7 @@ class CRUDController extends AbstractController
                 $entityManager->flush();
             }
 
-            return $this->redirectToRoute($this->admin->getRouter()->getRouteName('index'), [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute($this->admin->getRouter()->getRoute('index')->getName(), [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render($this->admin->getTemplateRegistry()->getTemplate('delete')->getPath(), $this->admin->getExtraParameters([
