@@ -2,11 +2,13 @@
 
 namespace App\Maker\Admin;
 
+use App\Maker\Admin\Manipulator\YamlSourceManipulator;
 use App\Maker\Admin\Model\RepositoryData;
 use App\Maker\Admin\Provider\ClassDetailProvider;
 use App\Service\Admin\AdminCRUD;
 use App\Service\Admin\ConfigurationListInterface;
 use App\Service\Admin\CRUDController;
+use App\Service\Manipulator\File\YamlFileManipulator;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -23,21 +25,23 @@ use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 class CrudMaker extends AbstractMaker
 {
-    private ?string $adminClassName = null;
-
-    private ?string $controllerClassName = null;
-
     private Inflector $inflector;
+
+    private Filesystem $filesystem;
 
     public function __construct(
         private DoctrineHelper $doctrineHelper,
     )
     {
         $this->inflector = InflectorFactory::create()->build();
+        $this->filesystem = new Filesystem();
     }
 
     public static function getCommandName(): string
@@ -54,6 +58,9 @@ class CrudMaker extends AbstractMaker
     {
         $command
             ->addArgument('entity', InputArgument::OPTIONAL, sprintf('The class name of the entity to create CRUD (e.g. <fg=yellow>%s</>)', Str::asClassName(Str::getRandomTerm())))
+            ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
+            ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')
+            ->addOption('service', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file')
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity');
@@ -66,6 +73,8 @@ class CrudMaker extends AbstractMaker
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
+        $io->section('Welcome to the Admin CRUD Maker');
+
         if (null === $input->getArgument('entity')) {
             $argument = $command->getDefinition()->getArgument('entity');
 
@@ -82,23 +91,34 @@ class CrudMaker extends AbstractMaker
         // Ask Admin Class
         $defaultAdminClass = Str::asClassName(sprintf('%s Admin', $input->getArgument('entity')));
 
-        $this->adminClassName = $io->ask(
+        $input->setOption('admin', $io->ask(
             sprintf('Choose a name for your admin class (e.g. <fg=yellow>%s</>)', $defaultAdminClass),
             $defaultAdminClass
-        );
+        ));
 
         // Ask Controller Class
         $defaultControllerClass = Str::asClassName(sprintf('%s Controller', $input->getArgument('entity')));
 
-        $this->controllerClassName = $io->ask(
+        $input->setOption('controller', $io->ask(
             sprintf('Choose a name for your controller class (e.g. <fg=yellow>%s</>)', $defaultControllerClass),
             $defaultControllerClass
-        );
+        ));
+
+        $input->setOption('service', $io->ask(
+            'What is your services YAML configuration file',
+            'services.yaml'
+        ));
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
         $inflector = InflectorFactory::create()->build();
+
+        $input->setOption('service', sprintf('config/%s', $input->getOption('service')));
+
+        if (!$this->filesystem->exists($input->getOption('service'))) {
+            throw new RuntimeCommandException(sprintf('The file "%s" does not exist.', $input->getOption('service')));
+        }
 
         $entityClassDetails = $generator->createClassNameDetails(
             Validator::entityExists($input->getArgument('entity'), $this->doctrineHelper->getEntitiesForAutocomplete()),
@@ -116,23 +136,24 @@ class CrudMaker extends AbstractMaker
         $repositoryData = new RepositoryData($generator, $entityDoctrineDetails);
 
         $adminClassDetails = $generator->createClassNameDetails(
-            $this->adminClassName,
+            $input->getOption('admin'),
             'Admin\\',
             'Admin'
         );
 
         $controllerClassDetails = $generator->createClassNameDetails(
-            $this->controllerClassName,
+            $input->getOption('controller'),
             'Controller\\Admin\\',
             'Controller'
         );
 
         $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $entityClassDetails);
         $this->generateController($generator, $controllerClassDetails, $adminClassDetails);
+        $this->updateConfig($input->getOption('service'), $io, $adminClassDetails);
 
 //        $routeName = Str::asRouteName($controllerClassDetails->getRelativeNameWithoutSuffix());
 //        $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
-//
+
 //        dd($repositoryData, $classDetailProvider->getFormClassDetail($entityClassDetails));
 
         $generator->writeChanges();
@@ -168,5 +189,32 @@ class CrudMaker extends AbstractMaker
             'use_statements' => $useStatements,
             'admin_class_name' => $adminClassDetails->getShortName(),
         ]);
+    }
+
+    private function updateConfig(string $path, ConsoleStyle $io, ClassNameDetails $classDetails)
+    {
+        $manipulator = $this->createYamlManipulator($path);
+
+        $manipulator
+            ->section('services')
+                ->add($classDetails->getFullName())
+                    ->setValue('tags', ["name" => "admin.crud"])
+                ->end()
+            ->end()
+        ;
+
+        $this->filesystem->dumpFile($path, $manipulator->get());
+
+        $comment = $this->filesystem->exists($path) ?
+            '<fg=yellow>updated</>'
+            : '<fg=blue>created</>';
+
+        $io->comment(sprintf('%s: %s', $comment, $path));
+    }
+
+    private function createYamlManipulator(string $path): YamlFileManipulator
+    {
+        return (new YamlFileManipulator())
+            ->load(file_get_contents($path));
     }
 }
