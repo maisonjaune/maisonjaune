@@ -4,7 +4,15 @@ namespace App\Service\Manipulator;
 
 interface ManipulatorInterface
 {
-    public function load(string $data): self;
+    public function load(string $data): static;
 
-    public function write(): bool;
+    public function section(string $name): static;
+
+    public function add(string $name): static;
+
+    public function setValue(string $name, mixed $value): static;
+
+    public function end(): static;
+
+    public function get(): string;
 }
