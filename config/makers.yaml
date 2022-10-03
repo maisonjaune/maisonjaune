@@ -1,4 +1,4 @@
 services:
   App\Maker\Admin\CrudMaker:
-    arguments: [ '@maker.doctrine_helper' ]
+    arguments: [ '@maker.doctrine_helper', '@doctrine.orm.entity_manager' ]
     tags: [ maker.command ]

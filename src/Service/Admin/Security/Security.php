@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin\Security;
 
+use App\Service\Admin\Utils\RoleNameGenerator;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Security
@@ -15,6 +16,6 @@ class Security
 
     public function can(string $name)
     {
-        return $this->authorizationChecker->isGranted(sprintf('ROLE_ADMIN_%s_%s', strtoupper($this->type), strtoupper($name)));
+        return $this->authorizationChecker->isGranted(RoleNameGenerator::generate($this->type, $name));
     }
 }

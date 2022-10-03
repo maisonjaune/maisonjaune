@@ -8,7 +8,7 @@ class <?= $class_name ?> extends AdminCRUD
 {
     public function configurationList(ConfigurationListInterface $configurationList): void
     {
-        // TODO: Configure your list
+        <?= $configurator_field ?>
     }
 
     public function getEntityClass(): string

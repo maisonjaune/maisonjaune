@@ -8,12 +8,16 @@ use App\Maker\Admin\Provider\ClassDetailProvider;
 use App\Service\Admin\AdminCRUD;
 use App\Service\Admin\ConfigurationListInterface;
 use App\Service\Admin\CRUDController;
+use App\Service\Admin\Utils\RoleNameGenerator;
+use App\Service\Admin\Utils\RouteNameGenerator;
 use App\Service\Manipulator\File\YamlFileManipulator;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
+use Symfony\Bundle\MakerBundle\Doctrine\EntityDetails;
 use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
@@ -28,7 +32,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
+use App\Maker\Admin\Generator\ConfigurationListGenerator;
 
 class CrudMaker extends AbstractMaker
 {
@@ -37,7 +41,8 @@ class CrudMaker extends AbstractMaker
     private Filesystem $filesystem;
 
     public function __construct(
-        private DoctrineHelper $doctrineHelper,
+        private DoctrineHelper         $doctrineHelper,
+        private EntityManagerInterface $entityManager
     )
     {
         $this->inflector = InflectorFactory::create()->build();
@@ -60,8 +65,7 @@ class CrudMaker extends AbstractMaker
             ->addArgument('entity', InputArgument::OPTIONAL, sprintf('The class name of the entity to create CRUD (e.g. <fg=yellow>%s</>)', Str::asClassName(Str::getRandomTerm())))
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')
-            ->addOption('service', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file')
-        ;
+            ->addOption('service', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file');
 
         $inputConfig->setArgumentAsNonInteractive('entity');
     }
@@ -73,7 +77,7 @@ class CrudMaker extends AbstractMaker
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
-        $io->section('Welcome to the Admin CRUD Maker');
+        $io->title('Welcome to the Admin CRUD Maker');
 
         if (null === $input->getArgument('entity')) {
             $argument = $command->getDefinition()->getArgument('entity');
@@ -147,7 +151,9 @@ class CrudMaker extends AbstractMaker
             'Controller'
         );
 
-        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $entityClassDetails);
+        $routePrefix = Str::asSnakeCase($controllerClassDetails->getRelativeNameWithoutSuffix());
+
+        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $entityClassDetails, $routePrefix);
         $this->generateController($generator, $controllerClassDetails, $adminClassDetails);
         $this->updateConfig($input->getOption('service'), $io, $adminClassDetails);
 
@@ -156,10 +162,37 @@ class CrudMaker extends AbstractMaker
 
 //        dd($repositoryData, $classDetailProvider->getFormClassDetail($entityClassDetails));
 
+//        IMPORTANT : Penser à indiquer l'ajout des roles aux utilisateurs
+//        IMPORTANT : Penser à indiquer l'ajout du liens
+
         $generator->writeChanges();
+
+        $io->newLine();
+        $io->section("Next: When you're ready :");
+
+        $io->listing([
+            "<info>Update</info> roles in your security configuration (maybe in <info>config/packages/security.yaml</info> (in <info>role_hierarchy</info> section)) :",
+            "<info>Manage</info> your route in your application"
+        ]);
+
+        $io->table(
+            ["Type", "Role", "Route"],
+            [
+                ["index", RoleNameGenerator::generate($routePrefix, 'index'), RouteNameGenerator::generate($routePrefix, 'index')],
+                ["new", RoleNameGenerator::generate($routePrefix, 'new'), RouteNameGenerator::generate($routePrefix, 'new')],
+                ["show", RoleNameGenerator::generate($routePrefix, 'show'), RouteNameGenerator::generate($routePrefix, 'show')],
+                ["edit", RoleNameGenerator::generate($routePrefix, 'edit'), RouteNameGenerator::generate($routePrefix, 'edit')],
+                ["delete", RoleNameGenerator::generate($routePrefix, 'delete'), RouteNameGenerator::generate($routePrefix, 'delete')],
+            ]
+        );
     }
 
-    private function generateAdmin(Generator $generator, ClassNameDetails $classDetails, ClassNameDetails $controllerClassDetails, ClassNameDetails $entityClassDetails): void
+    private function generateAdmin(
+        Generator        $generator,
+        ClassNameDetails $classDetails,
+        ClassNameDetails $controllerClassDetails,
+        ClassNameDetails $entityClassDetails,
+        string           $routePrefix): void
     {
         $useStatements = new UseStatementGenerator([
             $controllerClassDetails->getFullName(),
@@ -168,16 +201,23 @@ class CrudMaker extends AbstractMaker
             ConfigurationListInterface::class
         ]);
 
+        $configuratorFieldGenerator = new ConfigurationListGenerator($this->entityManager, $entityClassDetails, $useStatements);
+
         $generator->generateClass($classDetails->getFullName(), 'makers/admin/crud/admin/Admin.tpl.php', [
             'namespace' => Str::getNamespace($classDetails->getFullName()),
             'use_statements' => $useStatements,
+            'configurator_field' => $configuratorFieldGenerator,
             'entity_class_name' => $entityClassDetails->getShortName(),
             'controller_class_name' => $controllerClassDetails->getShortName(),
-            'router_prefix' => '',
+            'router_prefix' => $routePrefix,
         ]);
     }
 
-    private function generateController(Generator $generator, ClassNameDetails $classDetails, ClassNameDetails $adminClassDetails): void
+    private function generateController(
+        Generator        $generator,
+        ClassNameDetails $classDetails,
+        ClassNameDetails $adminClassDetails
+    ): void
     {
         $useStatements = new UseStatementGenerator([
             $adminClassDetails->getFullName(),
@@ -197,11 +237,10 @@ class CrudMaker extends AbstractMaker
 
         $manipulator
             ->section('services')
-                ->add($classDetails->getFullName())
-                    ->setValue('tags', ["name" => "admin.crud"])
-                ->end()
+            ->add($classDetails->getFullName())
+            ->setValue('tags', ["name" => "admin.crud"])
             ->end()
-        ;
+            ->end();
 
         $this->filesystem->dumpFile($path, $manipulator->get());
 
