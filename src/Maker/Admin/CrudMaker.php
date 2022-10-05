@@ -22,6 +22,7 @@ use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\Renderer\FormTypeRenderer;
 use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Util\ClassNameDetails;
 use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
@@ -33,6 +34,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Maker\Admin\Generator\ConfigurationListGenerator;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CrudMaker extends AbstractMaker
 {
@@ -42,7 +46,8 @@ class CrudMaker extends AbstractMaker
 
     public function __construct(
         private DoctrineHelper         $doctrineHelper,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private FormTypeRenderer       $formTypeRenderer
     )
     {
         $this->inflector = InflectorFactory::create()->build();
@@ -116,8 +121,6 @@ class CrudMaker extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-        $inflector = InflectorFactory::create()->build();
-
         $input->setOption('service', sprintf('config/%s', $input->getOption('service')));
 
         if (!$this->filesystem->exists($input->getOption('service'))) {
@@ -129,15 +132,11 @@ class CrudMaker extends AbstractMaker
             'Entity\\'
         );
 
-        $classDetailProvider = new ClassDetailProvider($generator);
-
         $entityDoctrineDetails = $this->doctrineHelper->createDoctrineDetails($entityClassDetails->getFullName());
 
         if (null === $entityDoctrineDetails->getRepositoryClass()) {
             throw new RuntimeCommandException("The entity {$entityClassDetails->getFullName()} does not have a repository class.");
         }
-
-        $repositoryData = new RepositoryData($generator, $entityDoctrineDetails);
 
         $adminClassDetails = $generator->createClassNameDetails(
             $input->getOption('admin'),
@@ -151,19 +150,21 @@ class CrudMaker extends AbstractMaker
             'Controller'
         );
 
+        $formClassDetails = $generator->createClassNameDetails(
+            $input->getArgument('entity'),
+            'Form\\',
+            'Type'
+        );
+
         $routePrefix = Str::asSnakeCase($controllerClassDetails->getRelativeNameWithoutSuffix());
 
-        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $entityClassDetails, $routePrefix);
+        $this->generateForm($formClassDetails, $entityClassDetails, $entityDoctrineDetails);
         $this->generateController($generator, $controllerClassDetails, $adminClassDetails);
-        $this->updateConfig($input->getOption('service'), $io, $adminClassDetails);
+        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $formClassDetails, $entityClassDetails, $routePrefix);
+        $this->updateConfig($generator, $input->getOption('service'), $io, $adminClassDetails);
 
-//        $routeName = Str::asRouteName($controllerClassDetails->getRelativeNameWithoutSuffix());
-//        $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
-
-//        dd($repositoryData, $classDetailProvider->getFormClassDetail($entityClassDetails));
-
-//        IMPORTANT : Penser à indiquer l'ajout des roles aux utilisateurs
-//        IMPORTANT : Penser à indiquer l'ajout du liens
+        // VOIR LA MODIFICATION DU REPOSITORY
+        // $repositoryData = new RepositoryData($generator, $entityDoctrineDetails);
 
         $generator->writeChanges();
 
@@ -175,28 +176,28 @@ class CrudMaker extends AbstractMaker
             "<info>Manage</info> your route in your application"
         ]);
 
-        $io->table(
-            ["Type", "Role", "Route"],
-            [
-                ["index", RoleNameGenerator::generate($routePrefix, 'index'), RouteNameGenerator::generate($routePrefix, 'index')],
-                ["new", RoleNameGenerator::generate($routePrefix, 'new'), RouteNameGenerator::generate($routePrefix, 'new')],
-                ["show", RoleNameGenerator::generate($routePrefix, 'show'), RouteNameGenerator::generate($routePrefix, 'show')],
-                ["edit", RoleNameGenerator::generate($routePrefix, 'edit'), RouteNameGenerator::generate($routePrefix, 'edit')],
-                ["delete", RoleNameGenerator::generate($routePrefix, 'delete'), RouteNameGenerator::generate($routePrefix, 'delete')],
-            ]
-        );
+        $io->table(["Type", "Role", "Route"], [
+            ["index", RoleNameGenerator::generate($routePrefix, 'index'), RouteNameGenerator::generate($routePrefix, 'index')],
+            ["new", RoleNameGenerator::generate($routePrefix, 'new'), RouteNameGenerator::generate($routePrefix, 'new')],
+            ["show", RoleNameGenerator::generate($routePrefix, 'show'), RouteNameGenerator::generate($routePrefix, 'show')],
+            ["edit", RoleNameGenerator::generate($routePrefix, 'edit'), RouteNameGenerator::generate($routePrefix, 'edit')],
+            ["delete", RoleNameGenerator::generate($routePrefix, 'delete'), RouteNameGenerator::generate($routePrefix, 'delete')],
+        ]);
     }
 
     private function generateAdmin(
         Generator        $generator,
         ClassNameDetails $classDetails,
         ClassNameDetails $controllerClassDetails,
+        ClassNameDetails $formClassDetails,
         ClassNameDetails $entityClassDetails,
-        string           $routePrefix): void
+        string           $routePrefix
+    ): void
     {
         $useStatements = new UseStatementGenerator([
             $controllerClassDetails->getFullName(),
             $entityClassDetails->getFullName(),
+            $formClassDetails->getFullName(),
             AdminCRUD::class,
             ConfigurationListInterface::class
         ]);
@@ -209,8 +210,22 @@ class CrudMaker extends AbstractMaker
             'configurator_field' => $configuratorFieldGenerator,
             'entity_class_name' => $entityClassDetails->getShortName(),
             'controller_class_name' => $controllerClassDetails->getShortName(),
+            'form_class_name' => $formClassDetails->getShortName(),
             'router_prefix' => $routePrefix,
         ]);
+    }
+
+    private function generateForm(
+        ClassNameDetails $classDetails,
+        ClassNameDetails $entityClassDetails,
+        EntityDetails $entityDoctrineDetails
+    )
+    {
+        $this->formTypeRenderer->render(
+            $classDetails,
+            $entityDoctrineDetails->getFormFields(),
+            $entityClassDetails
+        );
     }
 
     private function generateController(
@@ -231,7 +246,7 @@ class CrudMaker extends AbstractMaker
         ]);
     }
 
-    private function updateConfig(string $path, ConsoleStyle $io, ClassNameDetails $classDetails)
+    private function updateConfig(Generator $generator, string $path, ConsoleStyle $io, ClassNameDetails $classDetails)
     {
         $manipulator = $this->createYamlManipulator($path);
 
@@ -242,13 +257,7 @@ class CrudMaker extends AbstractMaker
             ->end()
             ->end();
 
-        $this->filesystem->dumpFile($path, $manipulator->get());
-
-        $comment = $this->filesystem->exists($path) ?
-            '<fg=yellow>updated</>'
-            : '<fg=blue>created</>';
-
-        $io->comment(sprintf('%s: %s', $comment, $path));
+        $generator->dumpFile($path, $manipulator->get());
     }
 
     private function createYamlManipulator(string $path): YamlFileManipulator

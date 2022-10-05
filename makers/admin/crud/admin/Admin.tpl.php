@@ -23,7 +23,7 @@ class <?= $class_name ?> extends AdminCRUD
 
     public function getFormType(): string
     {
-        // TODO: Set your FormType
+        return <?= $form_class_name ?>::class;
     }
 
     public function getRouterPrefix(): string

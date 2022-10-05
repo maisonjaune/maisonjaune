@@ -5,10 +5,7 @@ namespace App\Repository\Node;
 use App\Entity\Node\Post;
 use App\Repository\NodeRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\QueryException;
 
 /**
