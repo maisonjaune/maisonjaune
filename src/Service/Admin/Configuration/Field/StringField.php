@@ -3,8 +3,9 @@
 namespace App\Service\Admin\Configuration\Field;
 
 use App\Service\Admin\Configuration\Field;
+use App\Service\Admin\Configuration\SearchableField;
 
-class StringField extends Field
+class StringField extends Field implements SearchableField
 {
     const DEFAULT_VIEW = 'admin/CRUD/fields/string.html.twig';
 

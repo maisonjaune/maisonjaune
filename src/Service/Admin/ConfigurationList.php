@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\Configuration\Field;
+use App\Service\Admin\Configuration\SearchableField;
 
 class ConfigurationList implements ConfigurationListInterface
 {
@@ -24,5 +25,12 @@ class ConfigurationList implements ConfigurationListInterface
     public function getFields(): array
     {
         return $this->fields;
+    }
+
+    public function getSearchableFields(): array
+    {
+        return array_filter($this->fields, function(Field $field) {
+            return $field instanceof SearchableField;
+        });
     }
 }

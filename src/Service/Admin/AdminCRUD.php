@@ -2,7 +2,6 @@
 
 namespace App\Service\Admin;
 
-use App\Service\Admin\Exception\MissingFilterRepositoryException;
 use App\Service\Admin\Route\RouterFactory;
 use App\Service\Admin\Route\RouterInterface;
 use App\Service\Admin\Security\Security;
@@ -10,6 +9,9 @@ use App\Service\Admin\Security\SecurityFactory;
 use App\Service\Admin\Template\TemplateRegistryFactory;
 use App\Service\Admin\Template\TemplateRegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AdminCRUD implements AdminCRUDInterface
 {
@@ -19,7 +21,7 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     private TemplateRegistryInterface $templateRegistry;
 
-    private ?FilterRepositoryInterface $repository = null;
+    protected const ALIAS = 'entity';
 
     public function __construct(
         protected readonly EntityManagerInterface   $entityManager,
@@ -47,22 +49,33 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     public function getEntity(int $id): ?object
     {
-        return $this->getRepository()->find($id);
+        return $this->entityManager->find($this->getEntityClass(), $id);
     }
 
-    public function getRepository(): FilterRepositoryInterface
+    protected function createQueryBuilder($indexBy = null): QueryBuilder
     {
-        if (null === $this->repository) {
-            $repository = $this->entityManager->getRepository($this->getEntityClass());
+        return $this->entityManager->createQueryBuilder()
+            ->select(self::ALIAS)
+            ->from($this->getEntityClass(), self::ALIAS, $indexBy);
+    }
 
-            if (!$repository instanceof FilterRepositoryInterface) {
-                throw new MissingFilterRepositoryException($repository);
+    public function getQueryFilter(Request $request, ?array $parameters = null): Query
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (null !== $request->get('search')) {
+            $searchCondition = $qb->expr()->orX();
+
+            foreach ($this->getConfigurationList()->getSearchableFields() as $field) {
+                $searchCondition->add(sprintf('%s.%s LIKE :search', self::ALIAS, $field->getProperty()));
             }
 
-            $this->repository = $repository;
+            $qb
+                ->where($searchCondition)
+                ->setParameter('search', '%' . $request->get('search') . '%');
         }
 
-        return $this->repository;
+        return $qb->getQuery();
     }
 
     public function getExtraParameters(array $parameters = []): array

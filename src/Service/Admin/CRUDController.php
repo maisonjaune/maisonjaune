@@ -24,7 +24,7 @@ class CRUDController extends AbstractController
 
         $form->handleRequest($request);
 
-        $query = $this->admin->getRepository()->getQueryFilter($request, $form->getData());
+        $query = $this->admin->getQueryFilter($request, $form->getData());
 
         $entities = $paginator->paginate($query, $request->query->getInt('page', 1), 30);
 
