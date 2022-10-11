@@ -1,0 +1,5 @@
+---
+services:
+  Tournikoti\CrudBundle\Maker\CrudMaker:
+    arguments: [ '@maker.doctrine_helper' ]
+    tags: [ maker.command ]
