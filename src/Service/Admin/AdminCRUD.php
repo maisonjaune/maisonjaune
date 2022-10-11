@@ -21,6 +21,8 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     private TemplateRegistryInterface $templateRegistry;
 
+    private string $title;
+
     protected const ALIAS = 'entity';
 
     public function __construct(
@@ -32,9 +34,10 @@ abstract class AdminCRUD implements AdminCRUDInterface
         readonly TemplateRegistryFactory            $templateRegistryFactory,
     )
     {
+        $this->title = $this->humanize($this->getRouterPrefix());
         $this->security = $securityFactory->create($this->getRouterPrefix());
         $this->router = $routerFactory->create($this->getRouterPrefix(), $this->getControllerClass());
-        $this->templateRegistry = $templateRegistryFactory->create($this->getRouterPrefix());
+        $this->templateRegistry = $templateRegistryFactory->create($this->getRouterPrefix(), $this->title);
         $this->configurationList($this->configurationList);
         $this->configurationRouter($this->router);
         $this->configurationTemplateRegistry($this->templateRegistry);
@@ -119,5 +122,10 @@ abstract class AdminCRUD implements AdminCRUDInterface
 
     public function configurationTemplateRegistry(TemplateRegistryInterface $templateRegistry): void
     {
+    }
+
+    private function humanize(string $text): string
+    {
+        return ucfirst(strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text))));
     }
 }
