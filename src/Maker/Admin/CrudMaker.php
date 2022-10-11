@@ -172,8 +172,9 @@ class CrudMaker extends AbstractMaker
         $io->section("Next: When you're ready :");
 
         $io->listing([
-            "<info>Update</info> roles in your security configuration (maybe in <info>config/packages/security.yaml</info> (in <info>role_hierarchy</info> section)) :",
-            "<info>Manage</info> your route in your application"
+            "<info>Update</info> roles in your security configuration (maybe in <comment>config/packages/security.yaml</comment> (in <comment>role_hierarchy</comment> section)) :",
+            "<info>Manage</info> your route in your application",
+            sprintf("<info>Manage</info> your FormType <comment>%s</comment>", $formClassDetails->getFullName()),
         ]);
 
         $io->table(["Type", "Role", "Route"], [
