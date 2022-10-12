@@ -1,5 +1,27 @@
----
 services:
-  Tournikoti\CrudBundle\Maker\CrudMaker:
-    arguments: [ '@maker.doctrine_helper' ]
+  Tournikoti\CrudBundle\Command\CrudMaker:
+    arguments:
+      - '@maker.doctrine_helper'
+      - '@doctrine.orm.entity_manager'
+      - '@maker.renderer.form_type_renderer'
     tags: [ maker.command ]
+
+  Tournikoti\CrudBundle\Route\AdminRouteLoader:
+    tags:
+      - { name: routing.loader }
+
+  Tournikoti\CrudBundle\Configuration\ConfigurationListInterface:
+    class: Tournikoti\CrudBundle\Configuration\ConfigurationList
+
+  Tournikoti\CrudBundle\Renderer\PropertyRendererInterface:
+    class: Tournikoti\CrudBundle\Renderer\PropertyRenderer
+    arguments:
+      - '@Twig\Environment'
+
+  Tournikoti\CrudBundle\Security\SecurityFactory:
+    arguments:
+      - '@security.authorization_checker'
+
+  Tournikoti\CrudBundle\Route\RouterFactory: ~
+
+  Tournikoti\CrudBundle\Template\TemplateRegistryFactory: ~

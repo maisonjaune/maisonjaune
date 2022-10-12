@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Admin\UserAdmin;
-use App\Service\Admin\CRUDController;
+use Tournikoti\CrudBundle\Controller\CRUDController;
 
 class UserController extends CRUDController
 {

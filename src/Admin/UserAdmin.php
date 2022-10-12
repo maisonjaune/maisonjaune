@@ -5,12 +5,12 @@ namespace App\Admin;
 use App\Controller\Admin\UserController;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Service\Admin\AdminCRUD;
-use App\Service\Admin\Configuration\Field\ArrayField;
-use App\Service\Admin\Configuration\Field\BooleanField;
-use App\Service\Admin\Configuration\Field\DateTimeField;
-use App\Service\Admin\Configuration\Field\StringField;
-use App\Service\Admin\ConfigurationListInterface;
+use Tournikoti\CrudBundle\Admin\AdminCRUD;
+use Tournikoti\CrudBundle\Configuration\ConfigurationListInterface;
+use Tournikoti\CrudBundle\Configuration\Model\Type\ArrayField;
+use Tournikoti\CrudBundle\Configuration\Model\Type\BooleanField;
+use Tournikoti\CrudBundle\Configuration\Model\Type\DateTimeField;
+use Tournikoti\CrudBundle\Configuration\Model\Type\StringField;
 
 class UserAdmin extends AdminCRUD
 {
