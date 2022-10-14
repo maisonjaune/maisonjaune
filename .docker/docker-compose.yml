@@ -18,6 +18,7 @@ services:
       - smtp
     volumes:
       - ${SOURCE_ROOT_FOLDER}:/app
+      - ${BUNDLES_ROOT_FOLDER}:/bundles
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
