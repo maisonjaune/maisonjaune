@@ -1,0 +1,3 @@
+tournikoti_crud:
+  resource: '@TournikotiCrudBundle/config/routes.yaml'
+  prefix: /admin
