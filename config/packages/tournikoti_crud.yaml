@@ -1,0 +1,4 @@
+tournikoti_crud:
+  menus:
+    sidebar:
+      - { route: 'tournikoti_crud_dashboard' }
