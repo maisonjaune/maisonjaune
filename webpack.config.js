@@ -23,7 +23,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('main', './assets/main.js')
-    .addEntry('admin', './assets/admin.js')
     .addEntry('recaptcha', './assets/recaptcha.js')
     .addEntry('cookies', './assets/cookies.js')
 
