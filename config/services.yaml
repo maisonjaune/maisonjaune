@@ -63,3 +63,5 @@ services:
         class: App\Service\Media\MediaManager
         arguments: [!tagged_locator { tag: 'media.provider', default_index_method: 'getName' }]
 
+    App\Admin\UserAdmin:
+        tags: { name: admin.crud }
